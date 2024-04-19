@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- Existing code for user actions -->
     <button @click="logout" class="grey-btn">Logout</button>
     <a @click="goToUpdateDetails" class="update-details-btn"> Your account </a>
     <button class="inspiration-btn" @click="redirectToInspiration">
@@ -8,6 +9,8 @@
 
     <h2>Your Poems</h2>
     <SortByDate @sort-poems="sortPoems" />
+    <Search @search="searchPoems" />
+
     <div @click="toggleNewPoemForm" class="add-poem-toggle">Add New Poem</div>
     <hr />
     <NewPoemForm
@@ -16,7 +19,7 @@
       @close-form="closeNewPoemForm"
     />
 
-    <div v-for="poem in sortedPoems" :key="poem._id" class="poem-container">
+    <div v-for="poem in filteredPoems" :key="poem._id" class="poem-container">
       <div v-if="!poem.editing">
         <h3>{{ poem.title }}</h3>
         <p>{{ poem.content }}</p>
@@ -52,6 +55,7 @@
 import axios from "axios";
 import SortByDate from "./SortByDate.vue";
 import NewPoemForm from "./NewPoemForm.vue";
+import Search from "./SearchPoems.vue";
 import "../shared-styles.css";
 
 export default {
@@ -59,6 +63,7 @@ export default {
   components: {
     SortByDate,
     NewPoemForm,
+    Search,
   },
   data() {
     return {
@@ -70,6 +75,7 @@ export default {
       },
       sortBy: "asc",
       showNewPoemForm: false,
+      searchQuery: "",
     };
   },
   async created() {
@@ -86,6 +92,18 @@ export default {
         return this.poems
           .slice()
           .sort((a, b) => new Date(b.writtenDate) - new Date(a.writtenDate));
+      }
+    },
+    filteredPoems() {
+      if (!this.searchQuery) {
+        return this.sortedPoems;
+      } else {
+        const searchTerm = this.searchQuery.toLowerCase();
+        return this.sortedPoems.filter(
+          (poem) =>
+            poem.title.toLowerCase().includes(searchTerm) ||
+            poem.content.toLowerCase().includes(searchTerm)
+        );
       }
     },
   },
@@ -200,6 +218,9 @@ export default {
     },
     cancelEdit(poem) {
       poem.editing = false;
+    },
+    searchPoems(query) {
+      this.searchQuery = query;
     },
   },
 };
