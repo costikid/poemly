@@ -5,7 +5,6 @@ exports.getAllPoems = async (req, res) => {
   const userId = req.user.userId; 
 
   try {
-    // Find poems created by the authenticated user
     const poems = await Poem.find({ user: userId }, 'title content writtenDate');
     res.json(poems);
   } catch (err) {
@@ -38,7 +37,6 @@ exports.createPoem = async (req, res) => {
       content,
       writtenDate,
       user: userId,
-      category
     });
 
     await newPoem.save();
@@ -51,7 +49,7 @@ exports.createPoem = async (req, res) => {
 
 exports.updatePoem = async (req, res) => {
   const { id } = req.params;
-  const { title, content, writtenDate, category } = req.body;
+  const { title, content, writtenDate } = req.body;
 
   try {
     const poem = await Poem.findById(id);
@@ -65,7 +63,7 @@ exports.updatePoem = async (req, res) => {
       title,
       content,
       writtenDate,
-      category
+      
     };
     const updatedPoem = await Poem.findByIdAndUpdate(id, updatedFields, { new: true });
     res.json(updatedPoem);

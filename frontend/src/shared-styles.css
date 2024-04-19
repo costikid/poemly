@@ -1,0 +1,74 @@
+.filled-violet-btn{
+    background-color: var(--violet-dark);
+    color: var(--light);
+  }
+  
+  .filled-violet-btn:hover {
+    background-color: var(--violet-light);
+  }
+
+  .filled-orange-btn{
+    background-color: var(--orange-dark);
+    color: var(--light);
+  }
+  
+  .filled-orange-btn:hover {
+    background-color: var(--orange-light);
+  }
+  .grey-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: var(--link-cursor);
+    color: black;
+    transition: all 0.3s ease;
+  }
+  
+  .grey-btn:hover {
+    background-color: var(--light-grey);
+  }
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input,
+textarea,
+select {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+
+.container {
+  margin-left: 20px;
+}
+
+.poem-container {
+  margin-bottom: 20px;
+}
+
+
+button {
+  width: auto;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+a {
+  text-decoration: underline;
+}
+
+a:hover {
+  color: rgb(43, 43, 43);
+  cursor: var(--link-cursor);
+}

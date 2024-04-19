@@ -1,0 +1,18 @@
+:root{
+  --violet-dark: #3D348B;
+  --violet-light: #7678ED;
+  --yellow: #F7B801;
+  --orange-light:  #F18701;
+  --orange-dark: #F35B04;
+  --light: #fff;
+  --light-grey: rgb(204, 204, 204);
+--link-cursor: pointer;
+--warning: red; 
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+  font-family: 'Overpass', sans-serif; 
+  line-height: 2em;
+}

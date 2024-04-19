@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+
+
 require('dotenv').config();
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -16,7 +18,7 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.status(200).json({ token, userId: user._id }); 
+    res.status(200).json({ token, userId: user._id }); // Include userId in the response
   } catch (err) {
     console.error('Error logging in:', err);
     res.status(500).json({ message: 'Server error' });
@@ -39,14 +41,12 @@ exports.register = async (req, res) => {
     user = new User({ email, password });
     await user.save();
 
-
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
     console.error('Error registering user:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 exports.logout = (req, res) => {
   try {
     
