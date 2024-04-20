@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <!-- Existing code for user actions -->
     <button @click="logout" class="grey-btn">Logout</button>
     <a @click="goToUpdateDetails" class="update-details-btn"> Your account </a>
     <button class="inspiration-btn" @click="redirectToInspiration">
@@ -26,6 +25,7 @@
         <p>{{ formatDate(poem.writtenDate) }}</p>
         <button @click="editPoem(poem)" class="edit-btn">Edit</button>
         <button @click="deletePoem(poem._id)" class="delete-btn">Delete</button>
+        <ShareButton :title="poem.title" :content="poem.content" />
       </div>
       <div v-else>
         <form @submit.prevent="saveEditedPoem(poem)" class="edit-form">
@@ -56,6 +56,8 @@ import axios from "axios";
 import SortByDate from "./SortByDate.vue";
 import NewPoemForm from "./NewPoemForm.vue";
 import Search from "./SearchPoems.vue";
+import ShareButton from "./ShareButton.vue";
+
 import "../shared-styles.css";
 
 export default {
@@ -64,6 +66,7 @@ export default {
     SortByDate,
     NewPoemForm,
     Search,
+    ShareButton,
   },
   data() {
     return {

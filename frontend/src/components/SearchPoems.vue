@@ -1,4 +1,3 @@
-<!-- Search.vue -->
 <template>
   <input type="text" v-model="searchQuery" placeholder="Search your poems..." />
 </template>

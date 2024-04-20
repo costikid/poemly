@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="redirectToHome" class="logout-btn">Back</button>
+    <button @click="redirectToHome" class="grey-btn">Back</button>
 
     <h1>Update your details</h1>
     <p>Update your email</p>
