@@ -28,7 +28,7 @@ exports.getPoemById = async (req, res) => {
 };
 
 exports.createPoem = async (req, res) => {
-  const { title, content, writtenDate, category } = req.body;
+  const { title, content, writtenDate, categories } = req.body;
   const userId = req.user.userId;
 
   try {
@@ -36,6 +36,7 @@ exports.createPoem = async (req, res) => {
       title,
       content,
       writtenDate,
+      categories, 
       user: userId,
     });
 
@@ -49,7 +50,7 @@ exports.createPoem = async (req, res) => {
 
 exports.updatePoem = async (req, res) => {
   const { id } = req.params;
-  const { title, content, writtenDate } = req.body;
+  const { title, content, writtenDate, categories } = req.body;
 
   try {
     const poem = await Poem.findById(id);
@@ -63,7 +64,7 @@ exports.updatePoem = async (req, res) => {
       title,
       content,
       writtenDate,
-      
+      categories, 
     };
     const updatedPoem = await Poem.findByIdAndUpdate(id, updatedFields, { new: true });
     res.json(updatedPoem);

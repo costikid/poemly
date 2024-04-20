@@ -4,12 +4,11 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const poemRoutes = require('./routes/poemRoutes');
 const cors = require('cors'); 
-
 const userActionsRoutes = require("./routes/userActionsRoutes");
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/poemly';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/crudapi';
 
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
