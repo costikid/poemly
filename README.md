@@ -17,6 +17,8 @@
 2. VueJs component showing inspirational quotes and being able to copy them to clipboard using the [Quotable API](https://github.com/lukePeavey/quotable)
 3. Users can ORDER poems by written date or SEARCH them
 4. Users can share poems via email or social media
+5. Pinia for state management
+6. Composition API
 
 ## Setup
 
@@ -194,6 +196,8 @@ Configure nodemailer for email functionality and Mailslurp's SMTP server for tes
 4. [Mongoose](https://mongoosejs.com/)
 5. [Nodemailer](https://www.nodemailer.com/)
 6. [Mailslurp](https://www.mailslurp.com/)
+7. [Pinia](https://pinia.vuejs.org/)
+8. [VueCompositionAPI](https://vuejs.org/api/composition-api-setup.html)
 
 # To do
 
