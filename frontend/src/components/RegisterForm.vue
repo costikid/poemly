@@ -29,6 +29,7 @@
 import { ref } from "vue";
 import { useApiUrlsStore } from "@/stores/apiUrls";
 import { useRouter } from "vue-router"; // Import useRouter from Vue Router
+import Cookies from "js-cookie"; // Import Cookies library
 
 export default {
   name: "RegisterForm",
@@ -52,6 +53,10 @@ export default {
           }),
         });
         if (response.ok) {
+          const responseData = await response.json();
+          const token = responseData.token;
+          // Set JWT token as a cookie
+          Cookies.set("token", token);
           console.log("Registration successful");
           // Redirect to login page after successful registration
           router.push({ name: "Login" });

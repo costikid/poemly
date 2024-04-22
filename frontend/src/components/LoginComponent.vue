@@ -26,6 +26,7 @@ import { ref } from "vue";
 import axios from "axios";
 import { useApiUrlsStore } from "@/stores/apiUrls";
 import { useRouter } from "vue-router";
+import Cookies from "js-cookie"; // Import Cookies library
 
 export default {
   setup() {
@@ -42,20 +43,19 @@ export default {
           password: password.value,
         });
 
-        // Retrieve the user ID from the response data
+        // Retrieve the user ID and token from the response data
         const userId = response.data.userId;
-        console.log("User ID:", userId);
+        const token = response.data.token;
 
-        // Store the token and user ID in localStorage
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", userId);
+        // Set the JWT token and user ID as cookies
+        Cookies.set("token", token);
+        Cookies.set("userId", userId); // Store user ID in cookie
 
         // Navigate to the UserPoems component
         router.push({ name: "UserPoems" });
 
         // Load poems after successful login
-        // Emit a custom event to trigger the loadPoems function in the UserPoems component
-        router.currentRoute.value.meta.emitLoadPoems();
+        // No need to emit event, as we will load poems in the UserPoems component directly
       } catch (error) {
         console.error(error);
         errorMessage.value = "Invalid email or password.";

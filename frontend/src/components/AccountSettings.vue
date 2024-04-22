@@ -45,6 +45,7 @@
 import { ref } from "vue";
 import { useApiUrlsStore } from "@/stores/apiUrls";
 import axios from "axios";
+import Cookies from "js-cookie"; // Import Cookies library
 import { useRouter } from "vue-router";
 
 export default {
@@ -61,8 +62,8 @@ export default {
 
     const updateEmail = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const userId = localStorage.getItem("userId");
+        const token = Cookies.get("token"); // Retrieve token from cookies
+        const userId = Cookies.get("userId"); // Retrieve userId from cookies
 
         await axios.put(
           apiUrlsStore.updateDetailsUrl,
@@ -75,7 +76,9 @@ export default {
           }
         );
 
-        localStorage.setItem("email", newEmail.value);
+        // Update email in cookies
+        Cookies.set("email", newEmail.value);
+
         emailUpdated.value = true;
       } catch (error) {
         console.error(error);
@@ -84,8 +87,8 @@ export default {
 
     const changePassword = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const userId = localStorage.getItem("userId");
+        const token = Cookies.get("token"); // Retrieve token from cookies
+        const userId = Cookies.get("userId"); // Retrieve userId from cookies
 
         await axios.put(
           apiUrlsStore.changePasswordUrl,
@@ -111,8 +114,8 @@ export default {
 
     const deleteAccount = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const userId = localStorage.getItem("userId");
+        const token = Cookies.get("token"); // Retrieve token from cookies
+        const userId = Cookies.get("userId"); // Retrieve userId from cookies
 
         await axios.delete(apiUrlsStore.deleteAccountUrl, {
           headers: {

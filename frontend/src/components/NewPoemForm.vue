@@ -26,16 +26,22 @@ export default {
     const newContent = ref("");
 
     const saveNewPoem = () => {
+      // Emit the 'save-poem' event with the poem data
       emit("save-poem", {
         title: newTitle.value,
         content: newContent.value,
       });
+
+      // Clear the form fields after emitting the event
       newTitle.value = "";
       newContent.value = "";
+
+      // Close the form after saving the poem
       emit("close-form");
     };
 
     const cancelNewPoem = () => {
+      // Clear the form fields and close the form
       newTitle.value = "";
       newContent.value = "";
       emit("close-form");

@@ -50,12 +50,12 @@
     </div>
   </div>
 </template>
-
 <script>
 import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 import { useApiUrlsStore } from "@/stores/apiUrls";
 import { useRouter } from "vue-router";
+import Cookies from "js-cookie";
 
 import SortByDate from "./SortByDate.vue";
 import NewPoemForm from "./NewPoemForm.vue";
@@ -76,7 +76,6 @@ export default {
     const apiUrlsStore = useApiUrlsStore();
     const poems = ref([]);
     const userId = ref(null);
-    const newPoem = ref({ title: "", content: "" });
     const sortBy = ref("asc");
     const showNewPoemForm = ref(false);
     const searchQuery = ref("");
@@ -109,8 +108,14 @@ export default {
 
     const loadPoems = async () => {
       try {
-        const token = localStorage.getItem("token");
-        userId.value = localStorage.getItem("userId");
+        const token = Cookies.get("token");
+        userId.value = Cookies.get("userId");
+
+        if (!userId.value) {
+          console.error("User ID not found in cookies.");
+          return;
+        }
+
         const response = await axios.get(
           `${apiUrlsStore.userPoemsUrl}/${userId.value}`,
           {
@@ -130,94 +135,24 @@ export default {
       }
     };
 
-    const savePoem = async (poemData) => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.post(
-          apiUrlsStore.singlePoemUrl,
-          {
-            title: poemData.title,
-            content: poemData.content,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        poems.value.push(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const editPoem = (poem) => {
-      poem.editing = true;
-      poem.editedTitle = poem.title;
-      poem.editedContent = poem.content;
-    };
-
-    const saveEditedPoem = async (poem) => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.put(
-          `${apiUrlsStore.singlePoemUrl}/${poem._id}`,
-          {
-            title: poem.editedTitle,
-            content: poem.editedContent,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const updatedPoemIndex = poems.value.findIndex(
-          (p) => p._id === poem._id
-        );
-        poems.value[updatedPoemIndex] = response.data;
-        poem.editing = false;
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const deletePoem = async (poemId) => {
-      try {
-        const token = localStorage.getItem("token");
-        await axios.delete(`${apiUrlsStore.singlePoemUrl}/${poemId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        poems.value = poems.value.filter((poem) => poem._id !== poemId);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     const formatDate = (date) => {
-      return new Date(date).toLocaleDateString();
-    };
-
-    const redirectToInspiration = () => {
-      router.push({ name: "Inspiration" });
-    };
-
-    const goToUpdateDetails = () => {
-      router.push({ name: "AccountSettings" });
+      return new Date(date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
     };
 
     const logout = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = Cookies.get("token");
         await axios.post(apiUrlsStore.logoutUrl, null, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
+        Cookies.remove("token");
+        Cookies.remove("userId");
         if (router) {
           router.push({ name: "Login" });
         } else {
@@ -226,6 +161,14 @@ export default {
       } catch (error) {
         console.error("Error logging out:", error.message);
       }
+    };
+
+    const redirectToInspiration = () => {
+      router.push({ name: "Inspiration" });
+    };
+
+    const goToUpdateDetails = () => {
+      router.push({ name: "AccountSettings" });
     };
 
     const sortPoems = (sortOrder) => {
@@ -248,39 +191,122 @@ export default {
       searchQuery.value = query;
     };
 
-    // Load poems when the component is mounted
-    onMounted(() => {
-      if (
-        router.currentRoute.value.meta &&
-        router.currentRoute.value.meta.emitLoadPoems
-      ) {
-        loadPoems();
+    const savePoem = async (poemData) => {
+      try {
+        const token = Cookies.get("token");
+        const response = await axios.post(
+          apiUrlsStore.savePoemUrl,
+          {
+            userId: userId.value,
+            ...poemData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const newPoem = {
+          ...response.data,
+          editing: false,
+          editedTitle: response.data.title,
+          editedContent: response.data.content,
+        };
+        poems.value.push(newPoem);
+
+        closeNewPoemForm();
+      } catch (error) {
+        console.error("Error saving poem:", error);
       }
+    };
+
+    const editPoem = (poem) => {
+      poem.editing = true;
+    };
+
+    const saveEditedPoem = async (poem) => {
+      try {
+        const token = Cookies.get("token");
+        const response = await axios.put(
+          apiUrlsStore.updatePoemUrl(poem._id), // Pass poemId here
+          {
+            title: poem.editedTitle,
+            content: poem.editedContent,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          // Update the poem in the list with the edited data
+          const index = poems.value.findIndex((p) => p._id === poem._id);
+          if (index !== -1) {
+            poems.value[index].title = poem.editedTitle;
+            poems.value[index].content = poem.editedContent;
+            poems.value[index].editing = false; // Exit edit mode
+          }
+          // Close the editing form
+          cancelEdit(poem);
+        } else {
+          console.error("Failed to save edited poem.");
+        }
+      } catch (error) {
+        console.error("Error saving edited poem:", error);
+      }
+    };
+
+    const deletePoem = async (poemId) => {
+      try {
+        const token = Cookies.get("token");
+        const response = await axios.delete(
+          apiUrlsStore.updatePoemUrl(poemId), // Pass poemId here
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          // Remove the deleted poem from the list
+          poems.value = poems.value.filter((p) => p._id !== poemId);
+        } else {
+          console.error("Failed to delete poem.");
+        }
+      } catch (error) {
+        console.error("Error deleting poem:", error);
+      }
+    };
+
+    onMounted(() => {
+      loadPoems();
     });
 
     return {
       poems,
       userId,
-      newPoem,
       sortBy,
       showNewPoemForm,
       searchQuery,
       sortedPoems,
       filteredPoems,
-      loadPoems,
-      savePoem,
-      editPoem,
-      saveEditedPoem,
-      deletePoem,
-      formatDate,
+      logout,
       redirectToInspiration,
       goToUpdateDetails,
-      logout,
       sortPoems,
       toggleNewPoemForm,
       closeNewPoemForm,
       cancelEdit,
       searchPoems,
+      formatDate,
+      savePoem,
+      editPoem,
+      saveEditedPoem,
+      deletePoem, // Add deletePoem function to return
     };
   },
 };

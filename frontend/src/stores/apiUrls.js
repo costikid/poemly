@@ -31,5 +31,11 @@ export const useApiUrlsStore = defineStore({
     logoutUrl() {
       return `${this.authBaseUrl}/logout`;
     },
+    updatePoemUrl() {
+      return (poemId) => `${this.apiBaseUrl}/poems/${poemId}`;
+    },
+    savePoemUrl() {
+      return `${this.apiBaseUrl}/poems`;
+    },
   },
 });
