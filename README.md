@@ -157,7 +157,7 @@ Remember the bearer token
 
 # With email
 
-Configure nodemailer for email functionality and Mailslurp's SMTP server for testing. Follow [these instructions](https://www.mailslurp.com/guides/smtp-imap/). Remember to include Mailslurp's API key in the .env.
+Configure nodemailer for email functionality and Mailslurp's SMTP server for testing. Follow [these instructions](https://www.mailslurp.com/guides/smtp-imap/). Remember to include Mailslurp's API key in the .env. I have now removed the code below because I exceeded the API limit. But it's a valid template, regardless of the SMTP server you are using.
 
 - **authcontroller.js**
 
@@ -198,10 +198,3 @@ Configure nodemailer for email functionality and Mailslurp's SMTP server for tes
 6. [Mailslurp](https://www.mailslurp.com/)
 7. [Pinia](https://pinia.vuejs.org/)
 8. [VueCompositionAPI](https://vuejs.org/api/composition-api-setup.html)
-
-# To do
-
-1. Write some logic to delete the jwt token on client side now that I am sure it works
-2. Understanding why I get registration welcome email when I use a fake email address to receive but not on my outlook or gmail. Security policies?
-3. Maybe use cookies instead of local storage?
-4. Use nodemon instead of node index.js
