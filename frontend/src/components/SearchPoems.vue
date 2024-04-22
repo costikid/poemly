@@ -3,16 +3,19 @@
 </template>
 
 <script>
+import { ref, watch } from "vue";
+
 export default {
-  data() {
+  setup(props, { emit }) {
+    const searchQuery = ref("");
+
+    watch(searchQuery, (newVal) => {
+      emit("search", newVal);
+    });
+
     return {
-      searchQuery: "",
+      searchQuery,
     };
-  },
-  watch: {
-    searchQuery(newVal) {
-      this.$emit("search", newVal);
-    },
   },
 };
 </script>
