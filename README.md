@@ -14,11 +14,12 @@
 - FRONTEND
 
 1. VueJs components for login/register, write edit and delete poems, change account settings
-2. VueJs component showing inspirational quotes and being able to copy them to clipboard using the [Quotable API](https://github.com/lukePeavey/quotable)
+2. VueJs component showing inspirational quotes and being able to copy them to clipboard using the Quotable API
 3. Users can ORDER poems by written date or SEARCH them
 4. Users can share poems via email or social media
 5. Pinia for state management
 6. Composition API
+7. Check the end of the readme file for links to the tech stack used
 
 ## Setup
 
@@ -157,7 +158,7 @@ Remember the bearer token
 
 # With email
 
-Configure nodemailer for email functionality and Mailslurp's SMTP server for testing. Follow [these instructions](https://www.mailslurp.com/guides/smtp-imap/). Remember to include Mailslurp's API key in the .env. I have now removed the code below because I exceeded the API limit. But it's a valid template, regardless of the SMTP server you are using.
+Configure nodemailer for email functionality and Mailslurp's SMTP server for testing. Follow [these instructions](https://www.mailslurp.com/guides/smtp-imap/). Remember to include Mailslurp's API key in the .env of your root folder. I have now removed the code below because I have exceeded the API limit. But it's a valid template, regardless of the SMTP server you are using. Should you wish to include a welcome email after the user registers, place the code below in the register function of the auth controller.
 
 - **authcontroller.js**
 
@@ -198,3 +199,4 @@ Configure nodemailer for email functionality and Mailslurp's SMTP server for tes
 6. [Mailslurp](https://www.mailslurp.com/)
 7. [Pinia](https://pinia.vuejs.org/)
 8. [VueCompositionAPI](https://vuejs.org/api/composition-api-setup.html)
+9. [Quotable API](https://github.com/lukePeavey/quotable)
