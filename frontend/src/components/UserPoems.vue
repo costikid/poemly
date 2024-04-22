@@ -50,11 +50,8 @@
     </div>
   </div>
 </template>
-
 <script>
-import { ref, computed, onMounted } from "vue";
 import axios from "axios";
-import { useRoute, useRouter } from "vue-router";
 import { USER_POEMS_URL, SINGLE_POEM_URL } from "../apiConfig.js";
 import { LOGOUT_URL } from "../authConfig.js";
 import SortByDate from "./SortByDate.vue";
@@ -65,61 +62,66 @@ import ShareButton from "./ShareButton.vue";
 import "../shared-styles.css";
 
 export default {
+  name: "UserPoems",
   components: {
     SortByDate,
     NewPoemForm,
     Search,
     ShareButton,
   },
-  setup() {
-    const poems = ref([]);
-    const userId = ref(null);
-    const sortBy = ref("asc");
-    const showNewPoemForm = ref(false);
-    const searchQuery = ref("");
-    const route = useRoute();
-    const router = useRouter();
-
-    onMounted(async () => {
-      console.log("Component created");
-      await loadPoems();
-    });
-
-    const sortedPoems = computed(() => {
-      if (sortBy.value === "asc") {
-        return poems.value
+  data() {
+    return {
+      poems: [],
+      userId: null,
+      newPoem: {
+        title: "",
+        content: "",
+      },
+      sortBy: "asc",
+      showNewPoemForm: false,
+      searchQuery: "",
+    };
+  },
+  async created() {
+    console.log("Component created");
+    await this.loadPoems();
+  },
+  computed: {
+    sortedPoems() {
+      if (this.sortBy === "asc") {
+        return this.poems
           .slice()
           .sort((a, b) => new Date(a.writtenDate) - new Date(b.writtenDate));
       } else {
-        return poems.value
+        return this.poems
           .slice()
           .sort((a, b) => new Date(b.writtenDate) - new Date(a.writtenDate));
       }
-    });
-
-    const filteredPoems = computed(() => {
-      if (!searchQuery.value) {
-        return sortedPoems.value;
+    },
+    filteredPoems() {
+      if (!this.searchQuery) {
+        return this.sortedPoems;
       } else {
-        const searchTerm = searchQuery.value.toLowerCase();
-        return sortedPoems.value.filter(
+        const searchTerm = this.searchQuery.toLowerCase();
+        return this.sortedPoems.filter(
           (poem) =>
             poem.title.toLowerCase().includes(searchTerm) ||
             poem.content.toLowerCase().includes(searchTerm)
         );
       }
-    });
-
-    const loadPoems = async () => {
+    },
+  },
+  methods: {
+    async loadPoems() {
       try {
         const token = localStorage.getItem("token");
-        userId.value = localStorage.getItem("userId");
-        const response = await axios.get(`${USER_POEMS_URL}/${userId.value}`, {
+        this.userId = localStorage.getItem("userId");
+        const response = await axios.get(`${USER_POEMS_URL}/${this.userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        poems.value = response.data.map((poem) => ({
+        this.poems = response.data.map((poem) => ({
           ...poem,
           editing: false,
           editedTitle: poem.title,
@@ -128,9 +130,8 @@ export default {
       } catch (error) {
         console.error(error);
       }
-    };
-
-    const savePoem = async (poemData) => {
+    },
+    async savePoem(poemData) {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.post(
@@ -145,19 +146,17 @@ export default {
             },
           }
         );
-        poems.value.push(response.data);
+        this.poems.push(response.data);
       } catch (error) {
         console.error(error);
       }
-    };
-
-    const editPoem = async (poem) => {
+    },
+    async editPoem(poem) {
       poem.editing = true;
       poem.editedTitle = poem.title;
       poem.editedContent = poem.content;
-    };
-
-    const saveEditedPoem = async (poem) => {
+    },
+    async saveEditedPoem(poem) {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.put(
@@ -172,17 +171,16 @@ export default {
             },
           }
         );
-        const updatedPoemIndex = poems.value.findIndex(
+        const updatedPoemIndex = this.poems.findIndex(
           (p) => p._id === poem._id
         );
-        poems.value[updatedPoemIndex] = response.data;
+        this.poems[updatedPoemIndex] = response.data;
         poem.editing = false;
       } catch (error) {
         console.error(error);
       }
-    };
-
-    const deletePoem = async (poemId) => {
+    },
+    async deletePoem(poemId) {
       try {
         const token = localStorage.getItem("token");
         await axios.delete(`${SINGLE_POEM_URL}/${poemId}`, {
@@ -190,25 +188,22 @@ export default {
             Authorization: `Bearer ${token}`,
           },
         });
-        poems.value = poems.value.filter((poem) => poem._id !== poemId);
+        this.poems = this.poems.filter((poem) => poem._id !== poemId);
       } catch (error) {
         console.error(error);
       }
-    };
+    },
 
-    const redirectToInspiration = () => {
-      router.push({ name: "Inspiration" });
-    };
-
-    const formatDate = (date) => {
+    redirectToInspiration() {
+      this.$router.push({ name: "Inspiration" });
+    },
+    formatDate(date) {
       return new Date(date).toLocaleDateString();
-    };
-
-    const goToUpdateDetails = () => {
-      router.push({ name: "AccountSettings" });
-    };
-
-    const logout = async () => {
+    },
+    goToUpdateDetails() {
+      this.$router.push({ name: "AccountSettings" });
+    },
+    async logout() {
       try {
         const token = localStorage.getItem("token");
         await axios.post(LOGOUT_URL, null, {
@@ -218,57 +213,26 @@ export default {
         });
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
-        router.push({ name: "Login" });
+        this.$router.push({ name: "Login" });
       } catch (error) {
         console.error("Error logging out:", error.message);
       }
-    };
-
-    const sortPoems = (sortOrder) => {
-      sortBy.value = sortOrder;
-    };
-
-    const toggleNewPoemForm = () => {
-      showNewPoemForm.value = !showNewPoemForm.value;
-    };
-
-    const closeNewPoemForm = () => {
-      showNewPoemForm.value = false;
-    };
-
-    const cancelEdit = (poem) => {
+    },
+    sortPoems(sortOrder) {
+      this.sortBy = sortOrder;
+    },
+    toggleNewPoemForm() {
+      this.showNewPoemForm = !this.showNewPoemForm;
+    },
+    closeNewPoemForm() {
+      this.showNewPoemForm = false;
+    },
+    cancelEdit(poem) {
       poem.editing = false;
-    };
-
-    const searchPoems = (query) => {
-      searchQuery.value = query;
-    };
-
-    return {
-      poems,
-      userId,
-      sortBy,
-      showNewPoemForm,
-      searchQuery,
-      route,
-      router,
-      sortedPoems,
-      filteredPoems,
-      loadPoems,
-      savePoem,
-      editPoem,
-      saveEditedPoem,
-      deletePoem,
-      redirectToInspiration,
-      formatDate,
-      goToUpdateDetails,
-      logout,
-      sortPoems,
-      toggleNewPoemForm,
-      closeNewPoemForm,
-      cancelEdit,
-      searchPoems,
-    };
+    },
+    searchPoems(query) {
+      this.searchQuery = query;
+    },
   },
 };
 </script>

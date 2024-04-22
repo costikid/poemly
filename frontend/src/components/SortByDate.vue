@@ -9,16 +9,20 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 export default {
-  data() {
-    return {
-      selectedSort: "asc",
+  setup(props, { emit }) {
+    const selectedSort = ref("asc");
+
+    const sortPoems = () => {
+      emit("sort-poems", selectedSort.value);
     };
-  },
-  methods: {
-    sortPoems() {
-      this.$emit("sort-poems", this.selectedSort);
-    },
+
+    return {
+      selectedSort,
+      sortPoems,
+    };
   },
 };
 </script>
