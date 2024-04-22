@@ -22,24 +22,23 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import axios from "axios";
 import { LOGIN_URL } from "../authConfig.js";
-import "../shared-styles.css";
+import { useRouter } from "vue-router";
 
 export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-      errorMessage: "",
-    };
-  },
-  methods: {
-    async login() {
+  setup() {
+    const email = ref("");
+    const password = ref("");
+    const errorMessage = ref("");
+    const router = useRouter();
+
+    const login = async () => {
       try {
         const response = await axios.post(LOGIN_URL, {
-          email: this.email,
-          password: this.password,
+          email: email.value,
+          password: password.value,
         });
 
         // Retrieve the user ID from the response data
@@ -50,12 +49,19 @@ export default {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", userId);
 
-        this.$router.push({ name: "UserPoems" });
+        router.push({ name: "UserPoems" });
       } catch (error) {
         console.error(error);
-        this.errorMessage = "Invalid email or password.";
+        errorMessage.value = "Invalid email or password.";
       }
-    },
+    };
+
+    return {
+      email,
+      password,
+      errorMessage,
+      login,
+    };
   },
 };
 </script>

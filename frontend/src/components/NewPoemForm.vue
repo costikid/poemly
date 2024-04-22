@@ -17,30 +17,36 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import "../shared-styles.css";
 
 export default {
-  data() {
-    return {
-      newTitle: "",
-      newContent: "",
-    };
-  },
-  methods: {
-    saveNewPoem() {
-      this.$emit("save-poem", {
-        title: this.newTitle,
-        content: this.newContent,
+  setup(props, { emit }) {
+    const newTitle = ref("");
+    const newContent = ref("");
+
+    const saveNewPoem = () => {
+      emit("save-poem", {
+        title: newTitle.value,
+        content: newContent.value,
       });
-      this.newTitle = "";
-      this.newContent = "";
-      this.$emit("close-form");
-    },
-    cancelNewPoem() {
-      this.newTitle = "";
-      this.newContent = "";
-      this.$emit("close-form");
-    },
+      newTitle.value = "";
+      newContent.value = "";
+      emit("close-form");
+    };
+
+    const cancelNewPoem = () => {
+      newTitle.value = "";
+      newContent.value = "";
+      emit("close-form");
+    };
+
+    return {
+      newTitle,
+      newContent,
+      saveNewPoem,
+      cancelNewPoem,
+    };
   },
 };
 </script>

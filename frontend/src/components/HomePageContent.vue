@@ -2,19 +2,35 @@
   <div class="container">
     <h1>Welcome to Poemly</h1>
     <div class="buttons">
-      <router-link to="/login"
-        ><button class="filled-violet-btn">Login</button></router-link
-      >
-      <router-link to="/register"
-        ><button class="filled-orange-btn">Register</button></router-link
-      >
+      <button @click="redirectToLogin" class="filled-violet-btn">Login</button>
+      <button @click="redirectToRegister" class="filled-orange-btn">
+        Register
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+import { useRouter } from "vue-router";
+
 export default {
   name: "HomePageContent",
+  setup() {
+    const router = useRouter();
+
+    const redirectToLogin = () => {
+      router.push({ name: "Login" });
+    };
+
+    const redirectToRegister = () => {
+      router.push({ name: "Register" });
+    };
+
+    return {
+      redirectToLogin,
+      redirectToRegister,
+    };
+  },
 };
 </script>
 
