@@ -14,29 +14,32 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
 export default {
-  data() {
-    return {
-      quote: "",
-      author: "",
-    };
-  },
-  methods: {
-    async fetchRandomQuote() {
+  setup() {
+    const quote = ref("");
+    const author = ref("");
+    const router = useRouter();
+
+    const fetchRandomQuote = async () => {
       try {
         const response = await fetch("https://api.quotable.io/random");
         const quoteData = await response.json();
-        this.quote = quoteData.content;
-        this.author = quoteData.author;
+        quote.value = quoteData.content;
+        author.value = quoteData.author;
       } catch (error) {
         console.error(error);
       }
-    },
-    fetchAndEmitNewQuote() {
-      this.fetchRandomQuote();
-    },
-    copyQuote() {
-      const quoteWithAuthor = `${this.quote} - ${this.author}`;
+    };
+
+    const fetchAndEmitNewQuote = () => {
+      fetchRandomQuote();
+    };
+
+    const copyQuote = () => {
+      const quoteWithAuthor = `${quote.value} - ${author.value}`;
       const textarea = document.createElement("textarea");
       textarea.value = quoteWithAuthor;
       document.body.appendChild(textarea);
@@ -44,13 +47,21 @@ export default {
       document.execCommand("copy");
       document.body.removeChild(textarea);
       alert("Quote copied to clipboard!");
-    },
-    redirectToHome() {
-      this.$router.push({ name: "UserPoems" });
-    },
-  },
-  created() {
-    this.fetchRandomQuote();
+    };
+
+    const redirectToHome = () => {
+      router.push({ name: "UserPoems" });
+    };
+
+    fetchRandomQuote();
+
+    return {
+      quote,
+      author,
+      fetchAndEmitNewQuote,
+      copyQuote,
+      redirectToHome,
+    };
   },
 };
 </script>
