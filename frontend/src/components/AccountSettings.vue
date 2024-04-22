@@ -43,14 +43,9 @@
 
 <script>
 import { ref } from "vue";
+import { useApiUrlsStore } from "@/stores/apiUrls";
 import axios from "axios";
 import { useRouter } from "vue-router";
-
-import {
-  UPDATE_DETAILS_URL,
-  CHANGE_PASSWORD_URL,
-  DELETE_ACCOUNT_URL,
-} from "../apiConfig.js";
 
 export default {
   setup() {
@@ -61,6 +56,7 @@ export default {
     const passwordChanged = ref(false);
     const showDeleteConfirmationModal = ref(false);
 
+    const apiUrlsStore = useApiUrlsStore();
     const router = useRouter();
 
     const updateEmail = async () => {
@@ -69,7 +65,7 @@ export default {
         const userId = localStorage.getItem("userId");
 
         await axios.put(
-          UPDATE_DETAILS_URL,
+          apiUrlsStore.updateDetailsUrl,
           { email: newEmail.value },
           {
             headers: {
@@ -92,7 +88,7 @@ export default {
         const userId = localStorage.getItem("userId");
 
         await axios.put(
-          CHANGE_PASSWORD_URL,
+          apiUrlsStore.changePasswordUrl,
           {
             oldPassword: oldPassword.value,
             newPassword: newPassword.value,
@@ -118,7 +114,7 @@ export default {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
 
-        await axios.delete(DELETE_ACCOUNT_URL, {
+        await axios.delete(apiUrlsStore.deleteAccountUrl, {
           headers: {
             Authorization: `Bearer ${token}`,
             userId: userId,

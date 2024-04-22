@@ -26,42 +26,50 @@
 </template>
 
 <script>
-import { REGISTER_URL } from "../authConfig.js";
-import "../shared-styles.css";
+import { ref } from "vue";
+import { useApiUrlsStore } from "@/stores/apiUrls";
+import { useRouter } from "vue-router"; // Import useRouter from Vue Router
 
 export default {
   name: "RegisterForm",
-  data() {
-    return {
-      email: "",
-      password: "",
-      errorMessage: "",
-    };
-  },
-  methods: {
-    async registerUser() {
+  setup() {
+    const apiUrlsStore = useApiUrlsStore();
+    const router = useRouter(); // Access the router instance
+    const email = ref("");
+    const password = ref("");
+    const errorMessage = ref("");
+
+    const registerUser = async () => {
       try {
-        const response = await fetch(REGISTER_URL, {
+        const response = await fetch(apiUrlsStore.registerUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: this.email,
-            password: this.password,
+            email: email.value,
+            password: password.value,
           }),
         });
         if (response.ok) {
           console.log("Registration successful");
-          this.$router.push({ name: "Login" });
+          // Redirect to login page after successful registration
+          router.push({ name: "Login" });
         } else {
           const errorMessage = await response.json();
-          this.errorMessage = errorMessage.message;
+          errorMessage.value = errorMessage.message;
         }
       } catch (error) {
         console.error("Error registering user:", error.message);
       }
-    },
+    };
+
+    return {
+      email,
+      password,
+      errorMessage,
+      registerUser,
+    };
   },
 };
 </script>

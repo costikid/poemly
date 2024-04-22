@@ -26,6 +26,9 @@ const routes = [
     path: '/userpoems',
     name: 'UserPoems',
     component: UserPoemsPage,
+    meta: {
+      emitLoadPoems: true, 
+    },
   },
   {
     path: '/account-settings',

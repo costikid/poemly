@@ -24,7 +24,7 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
-import { LOGIN_URL } from "../authConfig.js";
+import { useApiUrlsStore } from "@/stores/apiUrls";
 import { useRouter } from "vue-router";
 
 export default {
@@ -32,11 +32,12 @@ export default {
     const email = ref("");
     const password = ref("");
     const errorMessage = ref("");
+    const apiUrlsStore = useApiUrlsStore();
     const router = useRouter();
 
     const login = async () => {
       try {
-        const response = await axios.post(LOGIN_URL, {
+        const response = await axios.post(apiUrlsStore.loginUrl, {
           email: email.value,
           password: password.value,
         });
@@ -49,7 +50,12 @@ export default {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", userId);
 
+        // Navigate to the UserPoems component
         router.push({ name: "UserPoems" });
+
+        // Load poems after successful login
+        // Emit a custom event to trigger the loadPoems function in the UserPoems component
+        router.currentRoute.value.meta.emitLoadPoems();
       } catch (error) {
         console.error(error);
         errorMessage.value = "Invalid email or password.";
