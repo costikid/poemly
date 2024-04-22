@@ -204,4 +204,4 @@ Configure nodemailer for email functionality and Mailslurp's SMTP server for tes
 1. Write some logic to delete the jwt token on client side now that I am sure it works
 2. Understanding why I get registration welcome email when I use a fake email address to receive but not on my outlook or gmail. Security policies?
 3. Maybe use cookies instead of local storage?
-4. Use nodemon instead of node index.js
+4. Deploy frontend + Backend + database to railway.app

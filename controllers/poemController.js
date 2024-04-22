@@ -1,4 +1,4 @@
-const Poem = require('../models/poem');
+const Poem = require('../models/poem'); // Declare Poem once
 const mongoose = require('mongoose');
 
 exports.getAllPoems = async (req, res) => {
@@ -73,6 +73,7 @@ exports.updatePoem = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 exports.deletePoem = async (req, res) => {
   const { id } = req.params;
   try {
@@ -80,7 +81,7 @@ exports.deletePoem = async (req, res) => {
     if (!poem) {
       return res.status(404).json({ message: 'Poem not found' });
     }
-    if (poem.owner !== req.user.id) {
+    if (poem.user !== req.user.userId) { // Change 'owner' to 'user'
       return res.status(403).json({ message: 'Unauthorized' });
     }
     await Poem.findByIdAndDelete(id);

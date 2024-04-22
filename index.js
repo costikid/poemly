@@ -5,6 +5,8 @@ const authRoutes = require('./routes/authRoutes');
 const poemRoutes = require('./routes/poemRoutes');
 const cors = require('cors'); 
 const userActionsRoutes = require("./routes/userActionsRoutes");
+const cookieParser = require('cookie-parser');
+
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,11 +24,11 @@ mongoose.connect(MONGODB_URI, {
 
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser()); // Place cookieParser middleware here
 
 app.use('/auth', authRoutes);
 app.use('/api', poemRoutes);
 app.use('/api', userActionsRoutes); 
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

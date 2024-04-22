@@ -1,7 +1,11 @@
 const User = require('../models/user');
 const bcrypt = require("bcrypt");
+const cookieParser = require('cookie-parser');
+
+// Assuming that cookie parser middleware is already included in your application
+
 exports.updateUserDetails = async (req, res) => {
-  const userId = req.user.userId; 
+  const userId = req.cookies.userId; // Access userId from cookies
   const { email } = req.body;
   try {
     await User.findByIdAndUpdate(userId, { email });
@@ -12,10 +16,8 @@ exports.updateUserDetails = async (req, res) => {
   }
 };
 
-
-
 exports.changePassword = async (req, res) => {
-  const userId = req.user.userId;
+  const userId = req.cookies.userId; // Access userId from cookies
   const { oldPassword, newPassword } = req.body;
   try {
     const user = await User.findById(userId);
@@ -43,8 +45,9 @@ exports.changePassword = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 exports.deleteUser = async (req, res) => {
-  const userId = req.user.userId; 
+  const userId = req.cookies.userId; // Access userId from cookies
   try {
     await User.findByIdAndDelete(userId);
     res.status(200).json({ message: 'User deleted successfully' });

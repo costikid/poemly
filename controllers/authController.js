@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-
 const nodemailer = require('nodemailer');
 const MailSlurp = require("mailslurp-client").MailSlurp;
 const fetchApi = require("isomorphic-fetch");
+const dotenv = require('dotenv');
 
-require('dotenv').config();
+dotenv.config();
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -22,7 +22,8 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.status(200).json({ token, userId: user._id }); // Include userId in the response
+    res.cookie('token', token, { httpOnly: true }); // Set token as a cookie
+    res.status(200).json({ userId: user._id }); // Include userId in the response
   } catch (err) {
     console.error('Error logging in:', err);
     res.status(500).json({ message: 'Server error' });
@@ -83,13 +84,13 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 exports.logout = (req, res) => {
   try {
-    
-      res.status(200).json({ message: 'Logged out successfully' });
+    res.clearCookie('token'); // Clear the token cookie on logout
+    res.status(200).json({ message: 'Logged out successfully' });
   } catch (error) {
-      console.error('Failed to logout:', error);
-      res.status(500).json({ message: 'Server error' });
+    console.error('Failed to logout:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
-
