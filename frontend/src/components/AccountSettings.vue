@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="redirectToHome" class="grey-btn">Back</button>
+    <button @click="redirectToUserPoemsPage" class="grey-btn">Back</button>
 
     <h1>Update your details</h1>
     <p>Update your email</p>
@@ -22,6 +22,9 @@
       <label for="newPassword">New Password:</label>
       <input type="password" id="newPassword" v-model="newPassword" required />
       <button type="submit">Change Password</button>
+      <p v-if="passwordChanged" class="success-message">
+        Password changed successfully!
+      </p>
     </form>
     <hr />
 
@@ -41,6 +44,8 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
+
 import {
   UPDATE_DETAILS_URL,
   CHANGE_PASSWORD_URL,
@@ -53,7 +58,10 @@ export default {
     const oldPassword = ref("");
     const newPassword = ref("");
     const emailUpdated = ref(false);
+    const passwordChanged = ref(false);
     const showDeleteConfirmationModal = ref(false);
+
+    const router = useRouter();
 
     const updateEmail = async () => {
       try {
@@ -97,7 +105,7 @@ export default {
           }
         );
 
-        alert("Password changed successfully!");
+        passwordChanged.value = true;
         oldPassword.value = "";
         newPassword.value = "";
       } catch (error) {
@@ -118,7 +126,7 @@ export default {
         });
 
         alert("Account deleted successfully!");
-        // Navigate to the home page
+        router.push("/");
       } catch (error) {
         console.error(error);
       }
@@ -132,20 +140,23 @@ export default {
       showDeleteConfirmationModal.value = false;
     };
 
-    const redirectToHome = () => {};
+    const redirectToUserPoemsPage = () => {
+      router.push({ name: "UserPoems" });
+    };
 
     return {
       newEmail,
       oldPassword,
       newPassword,
       emailUpdated,
+      passwordChanged,
       showDeleteConfirmationModal,
       updateEmail,
       changePassword,
       deleteAccount,
       openDeleteConfirmationModal,
       closeDeleteConfirmationModal,
-      redirectToHome,
+      redirectToUserPoemsPage,
     };
   },
 };

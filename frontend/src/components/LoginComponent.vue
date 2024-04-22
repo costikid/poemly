@@ -7,7 +7,7 @@
         v-model="email"
         placeholder="Email"
         required
-        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+        pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
       />
       <input
         type="password"

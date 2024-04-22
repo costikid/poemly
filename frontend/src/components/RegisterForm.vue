@@ -5,11 +5,10 @@
       <label for="email">Email:</label>
       <input
         type="email"
-        id="email"
         v-model="email"
-        placeholder="Enter your email"
+        placeholder="Email"
         required
-        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+        pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
       />
 
       <label for="password">Password:</label>
