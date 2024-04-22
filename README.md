@@ -155,55 +155,35 @@ Remember the bearer token
 
 # With email
 
-Use the "withoutemailsignup" default branch. The others are not being updated. Though they do provide a simple example of sending emails to users when they register and to reset the password. Remember to install nodemailer if you want to use those branches. And here is a short guide if you want to use those branches.
-
-Configure nodemailer for email functionality. I put some dummy SMTP connection data in the code but you will need to replace it with the details of your own SMTP server. You can use [Ethereal mail](https://ethereal.email/) if you need a fake server for testing purposes.
+Configure nodemailer for email functionality and Mailslurp's SMTP server for testing. Follow [these instructions](https://www.mailslurp.com/guides/smtp-imap/). Remember to include Mailslurp's API key in the .env.
 
 - **authcontroller.js**
 
-  ```// Sending welcome email
-   const transporter = nodemailer.createTransport({
-     host: 'your smtp server address',
-     port: your port,
-     secure: false,
-     auth: {
-       user: 'the email associated to your smtp address',
-       pass: 'your password'
-     }
-   });
+  ```const inbox = await mailslurp.createInboxWithOptions({
+    inboxType: 'SMTP_INBOX',
+  });
 
-   const mailOptions = {
-     from: 'the email associated to your smtp address',
-     to: email,
-     subject: 'Welcome to Our Website!',
-     text: 'Thank you for signing up. We are glad to have you on board!'
-   };
-  ```
+  const server = await mailslurp.inboxController.getImapSmtpAccess({
+    inboxId: inbox.id,
+  });
 
-- **forgotpasswordcontroller.js**
+  const transport = nodemailer.createTransport({
+    host: server.smtpServerHost,
+    port: server.smtpServerPort,
+    secure: false,
+    auth: {
+      user: server.smtpUsername,
+      pass: server.smtpPassword,
+      type: 'PLAIN',
+    },
+  });
 
-  ```
-  // Send password reset email
-    const transporter = nodemailer.createTransport({
-      host: 'your smtp server',
-      port: your port,
-      secure: false,
-      auth: {
-        user: 'email associated to your server',
-        pass: 'your password'
-      }
-    });
-
-    const mailOptions = {
-      from: 'email associated to your server',
-      to: email,
-      subject: 'Password Reset Request',
-      text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n`
-        + `Please click on the following link, or paste this into your browser to complete the process:\n\n`
-        + `http://${req.headers.host}/auth/reset-password/${resetToken}\n\n`
-        + `If you did not request this, please ignore this email and your password will remain unchanged.\n`
-    };
-
+  const sent = await transport.sendMail({
+    from: inbox.emailAddress,
+    to: email,
+    subject: 'Welcome to Our App',
+    text: 'Thank you for registering with us!',
+  });
   ```
 
 # Tech stack
