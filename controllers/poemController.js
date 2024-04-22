@@ -64,7 +64,7 @@ exports.updatePoem = async (req, res) => {
       title,
       content,
       writtenDate,
-      categories, 
+      categories, // Include categories in the updated fields
     };
     const updatedPoem = await Poem.findByIdAndUpdate(id, updatedFields, { new: true });
     res.json(updatedPoem);
@@ -73,7 +73,6 @@ exports.updatePoem = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 exports.deletePoem = async (req, res) => {
   const { id } = req.params;
   try {

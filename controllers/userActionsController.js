@@ -19,21 +19,30 @@ exports.changePassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   try {
     const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Check if the provided old password matches the user's current password
     const validPassword = await user.comparePassword(oldPassword);
     if (!validPassword) {
       return res.status(401).json({ message: 'Invalid old password' });
     }
+
+    // Hash the new password
     const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(newPassword, salt); // Provide the salt as the second argument
+    const hash = await bcrypt.hash(newPassword, salt);
+    
+    // Update the user's password with the hashed one
     user.password = hash;
     await user.save();
+    
     res.status(200).json({ message: 'Password changed successfully' });
   } catch (err) {
     console.error('Error changing password:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 exports.deleteUser = async (req, res) => {
   const userId = req.user.userId; 
   try {

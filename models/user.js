@@ -10,19 +10,20 @@ const userSchema = new mongoose.Schema({
     },
     message: props => `${props.value} is not a valid password. It must be at least 6 characters long and contain at least one number and one special character.`,
   }},
-  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Favorite' }],
   resetPasswordToken: String,
   resetPasswordExpires: Date 
 });
-
+ //problem 
 
 userSchema.pre('save', async function(next) {
-  const user = this;
-  if (!user.isModified('password')) return next();
+ 
+  // const user = this;
+  // if (!user.isModified('password')) return next();
 
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(user.password, salt);
-  user.password = hash;
+  // const salt = await bcrypt.genSalt(10);
+  // //problem ends
+  // const hash = await bcrypt.hash(user.password, salt);
+  // user.password = hash;
   next();
 });
 

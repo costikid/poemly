@@ -9,7 +9,9 @@
         v-model="email"
         placeholder="Enter your email"
         required
+        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
       />
+
       <label for="password">Password:</label>
       <input
         type="password"
@@ -25,6 +27,7 @@
 </template>
 
 <script>
+import { REGISTER_URL } from "../authConfig.js";
 import "../shared-styles.css";
 
 export default {
@@ -33,13 +36,13 @@ export default {
     return {
       email: "",
       password: "",
-      errorMessage: "", // Added errorMessage data property
+      errorMessage: "",
     };
   },
   methods: {
     async registerUser() {
       try {
-        const response = await fetch("http://localhost:3000/auth/register", {
+        const response = await fetch(REGISTER_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -51,10 +54,10 @@ export default {
         });
         if (response.ok) {
           console.log("Registration successful");
-          this.$router.push("/login");
+          this.$router.push({ name: "Login" });
         } else {
           const errorMessage = await response.json();
-          this.errorMessage = errorMessage.message; // Set errorMessage if registration fails
+          this.errorMessage = errorMessage.message;
         }
       } catch (error) {
         console.error("Error registering user:", error.message);
@@ -93,10 +96,5 @@ button {
   font-size: 16px;
   border: none;
   cursor: pointer;
-}
-
-.error-message {
-  color: var(--warning);
-  margin-top: 5px;
 }
 </style>

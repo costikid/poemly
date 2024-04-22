@@ -72,3 +72,8 @@ a:hover {
   color: rgb(43, 43, 43);
   cursor: var(--link-cursor);
 }
+
+.error-message {
+  color: var(--warning);
+  margin-top: 5px;
+}

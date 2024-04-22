@@ -9,6 +9,9 @@
       <label for="newEmail">New Email:</label>
       <input type="email" id="newEmail" v-model="newEmail" required />
       <button type="submit">Update Email</button>
+      <p v-if="emailUpdated" class="success-message">
+        Email updated successfully!
+      </p>
     </form>
     <hr />
     <p>Update your password</p>
@@ -21,31 +24,45 @@
       <button type="submit">Change Password</button>
     </form>
     <hr />
+
+    <a @click="openDeleteConfirmationModal">Delete Account</a>
+
+    <div v-if="showDeleteConfirmationModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="closeDeleteConfirmationModal">&times;</span>
+        <p>Are you sure you want to delete your account?</p>
+        <a class="delete" @click="deleteAccount">Yes</a>
+        <a @click="closeDeleteConfirmationModal">No</a>
+      </div>
+    </div>
   </div>
-  <a @click="deleteAccount">Delete Account</a>
 </template>
 
 <script>
+import { ref } from "vue";
 import axios from "axios";
-import "../shared-styles.css";
+import {
+  UPDATE_DETAILS_URL,
+  CHANGE_PASSWORD_URL,
+  DELETE_ACCOUNT_URL,
+} from "../apiConfig.js";
 
 export default {
-  data() {
-    return {
-      newEmail: "",
-      oldPassword: "",
-      newPassword: "",
-    };
-  },
-  methods: {
-    async updateEmail() {
+  setup() {
+    const newEmail = ref("");
+    const oldPassword = ref("");
+    const newPassword = ref("");
+    const emailUpdated = ref(false);
+    const showDeleteConfirmationModal = ref(false);
+
+    const updateEmail = async () => {
       try {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
 
-        const response = await axios.put(
-          "http://localhost:3000/api/update-details",
-          { email: this.newEmail },
+        await axios.put(
+          UPDATE_DETAILS_URL,
+          { email: newEmail.value },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -53,21 +70,24 @@ export default {
             },
           }
         );
-        console.log(response.data);
+
+        localStorage.setItem("email", newEmail.value);
+        emailUpdated.value = true;
       } catch (error) {
         console.error(error);
       }
-    },
-    async changePassword() {
+    };
+
+    const changePassword = async () => {
       try {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
 
-        const response = await axios.put(
-          "http://localhost:3000/api/change-password",
+        await axios.put(
+          CHANGE_PASSWORD_URL,
           {
-            oldPassword: this.oldPassword,
-            newPassword: this.newPassword,
+            oldPassword: oldPassword.value,
+            newPassword: newPassword.value,
           },
           {
             headers: {
@@ -76,47 +96,108 @@ export default {
             },
           }
         );
-        console.log(response.data);
+
+        alert("Password changed successfully!");
+        oldPassword.value = "";
+        newPassword.value = "";
       } catch (error) {
         console.error(error);
       }
-    },
-    async deleteAccount() {
+    };
+
+    const deleteAccount = async () => {
       try {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
 
-        const response = await axios.delete(
-          "http://localhost:3000/api/delete",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              userId: userId,
-            },
-          }
-        );
-        console.log(response.data);
+        await axios.delete(DELETE_ACCOUNT_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            userId: userId,
+          },
+        });
+
+        alert("Account deleted successfully!");
+        // Navigate to the home page
       } catch (error) {
         console.error(error);
       }
-    },
-    redirectToHome() {
-      this.$router.push("/UserPoems");
-    },
+    };
+
+    const openDeleteConfirmationModal = () => {
+      showDeleteConfirmationModal.value = true;
+    };
+
+    const closeDeleteConfirmationModal = () => {
+      showDeleteConfirmationModal.value = false;
+    };
+
+    const redirectToHome = () => {};
+
+    return {
+      newEmail,
+      oldPassword,
+      newPassword,
+      emailUpdated,
+      showDeleteConfirmationModal,
+      updateEmail,
+      changePassword,
+      deleteAccount,
+      openDeleteConfirmationModal,
+      closeDeleteConfirmationModal,
+      redirectToHome,
+    };
   },
 };
 </script>
 
 <style scoped>
-input {
-  padding: 1em;
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
 }
 
 a {
-  color: var(--warning);
+  padding: 1em;
+}
+
+.delete {
+  text-decoration: none;
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 button:hover {
   background-color: var(--light-grey);
+}
+
+.success-message {
+  color: green;
 }
 </style>

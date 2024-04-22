@@ -8,12 +8,15 @@
 4. Guide on how to test this using the thunderbolt vs code extension. Always remember the bearer token or your API calls won't work!
 5. CRUD backend API to change a user's password, delete the user or change their email
 6. Connection to mongodb using mongoose to store users emails and passwords, poems titles and content
-7. Check the end of the readme file for links to the tech stack used
+7. Dummy SMTP server to send the user a welcome email (using Mailslurp and Nodemailer)
+8. Check the end of the readme file for links to the tech stack used
 
 - FRONTEND
 
 1. VueJs components for login/register, write edit and delete poems, change account settings
 2. VueJs component showing inspirational quotes and being able to copy them to clipboard using the [Quotable API](https://github.com/lukePeavey/quotable)
+3. Users can ORDER poems by written date or SEARCH them
+4. Users can share poems via email or social media
 
 ## Setup
 
@@ -32,6 +35,7 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.4",
+     "nodemailer": "^6.9.13"
   }
 
 ```
@@ -149,9 +153,71 @@ Remember the bearer token
 
 Remember the bearer token
 
+# With email
+
+Use the "withoutemailsignup" default branch. The others are not being updated. Though they do provide a simple example of sending emails to users when they register and to reset the password. Remember to install nodemailer if you want to use those branches. And here is a short guide if you want to use those branches.
+
+Configure nodemailer for email functionality. I put some dummy SMTP connection data in the code but you will need to replace it with the details of your own SMTP server. You can use [Ethereal mail](https://ethereal.email/) if you need a fake server for testing purposes.
+
+- **authcontroller.js**
+
+  ```// Sending welcome email
+   const transporter = nodemailer.createTransport({
+     host: 'your smtp server address',
+     port: your port,
+     secure: false,
+     auth: {
+       user: 'the email associated to your smtp address',
+       pass: 'your password'
+     }
+   });
+
+   const mailOptions = {
+     from: 'the email associated to your smtp address',
+     to: email,
+     subject: 'Welcome to Our Website!',
+     text: 'Thank you for signing up. We are glad to have you on board!'
+   };
+  ```
+
+- **forgotpasswordcontroller.js**
+
+  ```
+  // Send password reset email
+    const transporter = nodemailer.createTransport({
+      host: 'your smtp server',
+      port: your port,
+      secure: false,
+      auth: {
+        user: 'email associated to your server',
+        pass: 'your password'
+      }
+    });
+
+    const mailOptions = {
+      from: 'email associated to your server',
+      to: email,
+      subject: 'Password Reset Request',
+      text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n`
+        + `Please click on the following link, or paste this into your browser to complete the process:\n\n`
+        + `http://${req.headers.host}/auth/reset-password/${resetToken}\n\n`
+        + `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+    };
+
+  ```
+
 # Tech stack
 
 1. [VUEjs](https://vuejs.org/)
 2. [Express](https://expressjs.com/)
 3. [JWT](https://jwt.io/)
 4. [Mongoose](https://mongoosejs.com/)
+5. [Nodemailer](https://www.nodemailer.com/)
+6. [Mailslurp](https://www.mailslurp.com/)
+
+# To do
+
+1. Write some logic to delete the jwt token on client side now that I am sure it works
+2. Understanding why I get registration welcome email when I use a fake email address to receive but not on my outlook or gmail. Security policies?
+3. Maybe use cookies instead of local storage?
+4. Use nodemon instead of node index.js

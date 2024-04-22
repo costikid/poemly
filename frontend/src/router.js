@@ -1,42 +1,41 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePageContent from './components/HomePageContent.vue';
-import RegisterForm from './components/RegisterForm.vue';
-import LoginComponent from './components/LoginComponent.vue';
-import UserPoems from './components/UserPoems.vue';
-import AccountSettings from './components/AccountSettings.vue'; 
-import InspirationalQuotes from './components/InspirationalQuotes.vue';
-
+import HomePage from './views/HomePage.vue';
+import RegisterPage from './views/RegisterPage.vue';
+import LoginPage from './views/LoginPage.vue';
+import UserPoemsPage from './views/UserPoemsPage.vue';
+import AccountSettingsPage from './views/AccountSettingsPage.vue';
+import InspirationalQuotesPage from './views/InspirationalQuotesPage.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'Homepage',
-    component: HomePageContent,
+    name: 'Home',
+    component: HomePage,
   },
   {
     path: '/register',
     name: 'Register',
-    component: RegisterForm,
+    component: RegisterPage,
   },
   {
     path: '/login',
     name: 'Login',
-    component: LoginComponent,
+    component: LoginPage,
   },
-  {
-  path: '/inspiration',
-  name: 'inspiration',
-  component: InspirationalQuotes,
-},
   {
     path: '/userpoems',
     name: 'UserPoems',
-    component: UserPoems,
+    component: UserPoemsPage,
   },
   {
     path: '/account-settings',
     name: 'AccountSettings',
-    component: AccountSettings,
+    component: AccountSettingsPage,
+  },
+  {
+    path: '/inspiration',
+    name: 'Inspiration',
+    component: InspirationalQuotesPage,
   },
 ];
 

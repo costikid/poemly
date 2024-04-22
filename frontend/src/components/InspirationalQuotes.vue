@@ -46,7 +46,7 @@ export default {
       alert("Quote copied to clipboard!");
     },
     redirectToHome() {
-      this.$router.push("/UserPoems");
+      this.$router.push({ name: "UserPoems" });
     },
   },
   created() {

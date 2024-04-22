@@ -2,7 +2,13 @@
   <div class="container">
     <h1>Login</h1>
     <form class="login-form" @submit.prevent="login">
-      <input type="email" v-model="email" placeholder="Email" required />
+      <input
+        type="email"
+        v-model="email"
+        placeholder="Email"
+        required
+        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+      />
       <input
         type="password"
         v-model="password"
@@ -17,6 +23,7 @@
 
 <script>
 import axios from "axios";
+import { LOGIN_URL } from "../authConfig.js";
 import "../shared-styles.css";
 
 export default {
@@ -30,7 +37,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post("http://localhost:3000/auth/login", {
+        const response = await axios.post(LOGIN_URL, {
           email: this.email,
           password: this.password,
         });
@@ -43,8 +50,7 @@ export default {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", userId);
 
-        // Redirect to the UserPoems component
-        this.$router.push("/UserPoems");
+        this.$router.push({ name: "UserPoems" });
       } catch (error) {
         console.error(error);
         this.errorMessage = "Invalid email or password.";
@@ -78,10 +84,6 @@ button {
   font-size: 16px;
   border: none;
   cursor: pointer;
-}
-
-.error-message {
-  color: var(--warning);
 }
 
 h1 {

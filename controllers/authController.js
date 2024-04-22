@@ -2,8 +2,12 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
+const nodemailer = require('nodemailer');
+const MailSlurp = require("mailslurp-client").MailSlurp;
+const fetchApi = require("isomorphic-fetch");
 
 require('dotenv').config();
+
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -38,8 +42,40 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: 'Password must be at least 6 characters long and contain at least one number and one special character' });
     }
 
-    user = new User({ email, password });
+    const hash = await bcrypt.hash(password, 10);
+    user = new User({ email, password: hash });
+    console.log('user', user);
+
     await user.save();
+
+    const mailslurp = new MailSlurp({ apiKey: process.env.API_KEY });
+    const inbox = await mailslurp.createInboxWithOptions({
+      inboxType: 'SMTP_INBOX',
+    });
+
+    const server = await mailslurp.inboxController.getImapSmtpAccess({
+      inboxId: inbox.id,
+    });
+
+    const transport = nodemailer.createTransport({
+      host: server.smtpServerHost,
+      port: server.smtpServerPort,
+      secure: false,
+      auth: {
+        user: server.smtpUsername,
+        pass: server.smtpPassword,
+        type: 'PLAIN',
+      },
+    });
+
+    const sent = await transport.sendMail({
+      from: inbox.emailAddress,
+      to: email,
+      subject: 'Welcome to Our App',
+      text: 'Thank you for registering with us!',
+    });
+
+    console.log('Registration email sent:', sent);
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {

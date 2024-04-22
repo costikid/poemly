@@ -50,9 +50,10 @@
     </div>
   </div>
 </template>
-
 <script>
 import axios from "axios";
+import { USER_POEMS_URL, SINGLE_POEM_URL } from "../apiConfig.js";
+import { LOGOUT_URL } from "../authConfig.js";
 import SortByDate from "./SortByDate.vue";
 import NewPoemForm from "./NewPoemForm.vue";
 import Search from "./SearchPoems.vue";
@@ -115,14 +116,11 @@ export default {
       try {
         const token = localStorage.getItem("token");
         this.userId = localStorage.getItem("userId");
-        const response = await axios.get(
-          `http://localhost:3000/api/poems/user/${this.userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${USER_POEMS_URL}/${this.userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         this.poems = response.data.map((poem) => ({
           ...poem,
           editing: false,
@@ -137,7 +135,7 @@ export default {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:3000/api/poems",
+          SINGLE_POEM_URL,
           {
             title: poemData.title,
             content: poemData.content,
@@ -162,7 +160,7 @@ export default {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.put(
-          `http://localhost:3000/api/poems/${poem._id}`,
+          `${SINGLE_POEM_URL}/${poem._id}`,
           {
             title: poem.editedTitle,
             content: poem.editedContent,
@@ -185,7 +183,7 @@ export default {
     async deletePoem(poemId) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:3000/api/poems/${poemId}`, {
+        await axios.delete(`${SINGLE_POEM_URL}/${poemId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -197,18 +195,28 @@ export default {
     },
 
     redirectToInspiration() {
-      this.$router.push("/inspiration");
+      this.$router.push({ name: "Inspiration" });
     },
     formatDate(date) {
       return new Date(date).toLocaleDateString();
     },
     goToUpdateDetails() {
-      this.$router.push("/account-settings");
+      this.$router.push({ name: "AccountSettings" });
     },
-    logout() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userId");
-      this.$router.push("/login");
+    async logout() {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.post(LOGOUT_URL, null, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        this.$router.push({ name: "Login" });
+      } catch (error) {
+        console.error("Error logging out:", error.message);
+      }
     },
     sortPoems(sortOrder) {
       this.sortBy = sortOrder;
