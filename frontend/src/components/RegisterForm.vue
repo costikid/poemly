@@ -28,14 +28,14 @@
 <script>
 import { ref } from "vue";
 import { useApiUrlsStore } from "@/stores/apiUrls";
-import { useRouter } from "vue-router"; // Import useRouter from Vue Router
-import Cookies from "js-cookie"; // Import Cookies library
+import { useRouter } from "vue-router";
+import Cookies from "js-cookie";
 
 export default {
   name: "RegisterForm",
   setup() {
     const apiUrlsStore = useApiUrlsStore();
-    const router = useRouter(); // Access the router instance
+    const router = useRouter();
     const email = ref("");
     const password = ref("");
     const errorMessage = ref("");
@@ -58,7 +58,6 @@ export default {
           // Set JWT token as a cookie
           Cookies.set("token", token);
           console.log("Registration successful");
-          // Redirect to login page after successful registration
           router.push({ name: "Login" });
         } else {
           const errorMessage = await response.json();

@@ -51,11 +51,7 @@ export default {
         Cookies.set("token", token);
         Cookies.set("userId", userId); // Store user ID in cookie
 
-        // Navigate to the UserPoems component
         router.push({ name: "UserPoems" });
-
-        // Load poems after successful login
-        // No need to emit event, as we will load poems in the UserPoems component directly
       } catch (error) {
         console.error(error);
         errorMessage.value = "Invalid email or password.";

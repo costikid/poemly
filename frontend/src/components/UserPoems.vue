@@ -248,14 +248,12 @@ export default {
         );
 
         if (response.status === 200) {
-          // Update the poem in the list with the edited data
           const index = poems.value.findIndex((p) => p._id === poem._id);
           if (index !== -1) {
             poems.value[index].title = poem.editedTitle;
             poems.value[index].content = poem.editedContent;
-            poems.value[index].editing = false; // Exit edit mode
+            poems.value[index].editing = false;
           }
-          // Close the editing form
           cancelEdit(poem);
         } else {
           console.error("Failed to save edited poem.");
@@ -278,7 +276,6 @@ export default {
         );
 
         if (response.status === 200) {
-          // Remove the deleted poem from the list
           poems.value = poems.value.filter((p) => p._id !== poemId);
         } else {
           console.error("Failed to delete poem.");
@@ -314,7 +311,7 @@ export default {
       saveEditedPoem,
       loadPoems,
 
-      deletePoem, // Add deletePoem function to return
+      deletePoem,
     };
   },
 };
