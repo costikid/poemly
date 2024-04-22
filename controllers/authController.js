@@ -49,35 +49,8 @@ exports.register = async (req, res) => {
 
     await user.save();
 
-    const mailslurp = new MailSlurp({ apiKey: process.env.API_KEY });
-    const inbox = await mailslurp.createInboxWithOptions({
-      inboxType: 'SMTP_INBOX',
-    });
-
-    const server = await mailslurp.inboxController.getImapSmtpAccess({
-      inboxId: inbox.id,
-    });
-
-    const transport = nodemailer.createTransport({
-      host: server.smtpServerHost,
-      port: server.smtpServerPort,
-      secure: false,
-      auth: {
-        user: server.smtpUsername,
-        pass: server.smtpPassword,
-        type: 'PLAIN',
-      },
-    });
-
-    const sent = await transport.sendMail({
-      from: inbox.emailAddress,
-      to: email,
-      subject: 'Welcome to Our App',
-      text: 'Thank you for registering with us!',
-    });
-
-    console.log('Registration email sent:', sent);
-
+    
+    
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
     console.error('Error registering user:', err);

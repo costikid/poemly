@@ -24,17 +24,17 @@
     </form>
   </div>
 </template>
+
 <script>
 import { ref } from "vue";
 import { useApiUrlsStore } from "@/stores/apiUrls";
-import { useRouter } from "vue-router";
-import { Cookies } from "vue3-cookies"; // Import Cookies from vue3-cookies
+import { useRouter } from "vue-router"; // Import useRouter from Vue Router
 
 export default {
   name: "RegisterForm",
   setup() {
     const apiUrlsStore = useApiUrlsStore();
-    const router = useRouter();
+    const router = useRouter(); // Access the router instance
     const email = ref("");
     const password = ref("");
     const errorMessage = ref("");
@@ -53,13 +53,11 @@ export default {
         });
         if (response.ok) {
           console.log("Registration successful");
-          // Set cookies after successful registration
-          Cookies.set("email", email.value);
           // Redirect to login page after successful registration
           router.push({ name: "Login" });
         } else {
-          const errorResponse = await response.json();
-          errorMessage.value = errorResponse.message;
+          const errorMessage = await response.json();
+          errorMessage.value = errorMessage.message;
         }
       } catch (error) {
         console.error("Error registering user:", error.message);
