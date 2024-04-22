@@ -5,37 +5,42 @@ export const useApiUrlsStore = defineStore({
   state: () => ({
     apiBaseUrl: 'http://localhost:3000/api',
     authBaseUrl: 'http://localhost:3000/auth',
-  }),
-  getters: {
+    userId: null, // Add userId to the initial state
+    }),
+    getters: {
     updateDetailsUrl() {
-      return `${this.apiBaseUrl}/update-details`;
+    return `${this.apiBaseUrl}/update-details`;
     },
     changePasswordUrl() {
-      return `${this.apiBaseUrl}/change-password`;
+    return `${this.apiBaseUrl}/change-password`;
     },
     deleteAccountUrl() {
-      return `${this.apiBaseUrl}/delete`;
+    return `${this.apiBaseUrl}/delete`;
     },
-    userPoemsUrl() {
-      return `${this.apiBaseUrl}/poems/user`;
+    userPoemsUrl(state) {
+      const userId = state.userId;
+      if (!userId) {
+        console.error("User ID is not set.");
+        return null;
+      }
+      return `${this.apiBaseUrl}/poems/user/${userId}`;
     },
     singlePoemUrl() {
-      return `${this.apiBaseUrl}/poems`;
+    return `${this.apiBaseUrl}/poems`;
     },
     loginUrl() {
-      return `${this.authBaseUrl}/login`;
+    return `${this.authBaseUrl}/login`;
     },
     registerUrl() {
-      return `${this.authBaseUrl}/register`;
+    return `${this.authBaseUrl}/register`;
     },
     logoutUrl() {
-      return `${this.authBaseUrl}/logout`;
+    return `${this.authBaseUrl}/logout`;
     },
     updatePoemUrl() {
-      return (poemId) => `${this.apiBaseUrl}/poems/${poemId}`;
+    return (poemId) => `${this.apiBaseUrl}/poems/${poemId}`;
     },
     savePoemUrl() {
-      return `${this.apiBaseUrl}/poems`;
+    return `${this.apiBaseUrl}/poems`;
     },
-  },
-});
+    },});

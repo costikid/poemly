@@ -75,11 +75,12 @@ export default {
   setup() {
     const apiUrlsStore = useApiUrlsStore();
     const poems = ref([]);
-    const userId = ref(null);
     const sortBy = ref("asc");
     const showNewPoemForm = ref(false);
     const searchQuery = ref("");
     const router = useRouter();
+
+    const userId = computed(() => apiUrlsStore.userId);
 
     const sortedPoems = computed(() => {
       if (sortBy.value === "asc") {
@@ -105,25 +106,27 @@ export default {
         );
       }
     });
-
     const loadPoems = async () => {
       try {
         const token = Cookies.get("token");
-        userId.value = Cookies.get("userId");
+        let userIdValue = userId.value;
 
-        if (!userId.value) {
+        // Check if userId is not set or null, then try to retrieve it from cookies
+        if (!userIdValue || userIdValue === "null") {
+          userIdValue = Cookies.get("userId");
+          apiUrlsStore.userId = userIdValue; // Assign userId directly to the store's state
+        }
+
+        if (!userIdValue) {
           console.error("User ID not found in cookies.");
           return;
         }
 
-        const response = await axios.get(
-          `${apiUrlsStore.userPoemsUrl}/${userId.value}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(apiUrlsStore.userPoemsUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         poems.value = response.data.map((poem) => ({
           ...poem,
           editing: false,
@@ -134,7 +137,6 @@ export default {
         console.error(error);
       }
     };
-
     const formatDate = (date) => {
       return new Date(date).toLocaleDateString("en-US", {
         year: "numeric",
@@ -153,6 +155,10 @@ export default {
         });
         Cookies.remove("token");
         Cookies.remove("userId");
+
+        // Reset userId in the Pinia store
+        apiUrlsStore.userId = null;
+
         if (router) {
           router.push({ name: "Login" });
         } else {
@@ -306,6 +312,8 @@ export default {
       savePoem,
       editPoem,
       saveEditedPoem,
+      loadPoems,
+
       deletePoem, // Add deletePoem function to return
     };
   },
