@@ -1,27 +1,31 @@
 <template>
   <div class="container">
-    <h2>Register</h2>
-    <form class="register-form" @submit.prevent="registerUser">
-      <label for="email">Email:</label>
-      <input
-        type="email"
-        v-model="email"
-        placeholder="Email"
-        required
-        pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
-      />
+    <div class="background-image"></div>
+    <div class="overlay"></div>
+    <div class="auth-container glass-effect">
+      <h2>Register</h2>
+      <form @submit.prevent="registerUser" class="auth-form">
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          v-model="email"
+          placeholder="Email"
+          required
+          pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+        />
 
-      <label for="password">Password:</label>
-      <input
-        type="password"
-        id="password"
-        v-model="password"
-        placeholder="Enter your password"
-        required
-      />
-      <button type="submit" class="filled-violet-btn">Register</button>
-      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-    </form>
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          v-model="password"
+          placeholder="Enter your password"
+          required
+        />
+        <button type="submit" class="filled-violet-btn">Register</button>
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -80,13 +84,10 @@ export default {
 
 <style scoped>
 .container {
-  text-align: center;
-}
-
-.register-form {
-  display: inline-block;
-  text-align: left;
-  max-width: 300px;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 
 label {
@@ -107,5 +108,14 @@ button {
   font-size: 16px;
   border: none;
   cursor: pointer;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.error-message {
+  color: red;
 }
 </style>

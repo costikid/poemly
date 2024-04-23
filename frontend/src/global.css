@@ -8,6 +8,12 @@
   --light-grey: rgb(204, 204, 204);
 --link-cursor: pointer;
 --warning: red; 
+--overlay-background: rgba(0, 0, 0, 0.8);
+--grey-background: rgba(255, 255, 255, 0.2);
+--glass-filter:  blur(5px);
+
+
+
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap');

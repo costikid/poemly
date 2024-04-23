@@ -1,5 +1,7 @@
 <template>
   <div class="random-quote-container">
+    <div class="background-image"></div>
+    <div class="overlay"></div>
     <button @click="redirectToHome" class="grey-btn">Back</button>
 
     <h3>Inspiration</h3>
@@ -69,5 +71,14 @@ export default {
 <style scoped>
 .random-quote-container {
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--grey-background);
+  backdrop-filter: var(--glass-filter);
+  padding: 0.5em;
+  z-index: 3;
 }
 </style>

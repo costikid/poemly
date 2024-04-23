@@ -57,6 +57,12 @@ export default {
 <style scoped>
 .new-poem-form {
   margin-bottom: 20px;
+  border-radius: 10px;
+  background: var(--grey-background);
+  backdrop-filter: var(--glass-filter);
+  max-width: 50%;
+  padding: 0.5em;
+  margin-left: 10px;
 }
 
 .content-textarea {

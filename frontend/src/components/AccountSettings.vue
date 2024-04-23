@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="settings">
     <button @click="redirectToUserPoemsPage" class="grey-btn">Back</button>
 
     <h1>Update your details</h1>
@@ -162,6 +162,16 @@ export default {
 </script>
 
 <style scoped>
+.settings {
+  background: linear-gradient(to bottom right, #333333, #666666);
+  padding: 1em;
+}
+
+h1,
+p,
+label {
+  color: var(--light);
+}
 .modal {
   display: block;
   position: fixed;
@@ -184,6 +194,7 @@ export default {
 
 a {
   padding: 1em;
+  color: var(--light);
 }
 
 .delete {
@@ -207,7 +218,12 @@ button:hover {
   background-color: var(--light-grey);
 }
 
-.success-message {
-  color: green;
+form {
+  background: var(--grey-background);
+  backdrop-filter: var(--glass-filter);
+  max-width: 50%;
+  padding: 0.5em;
+  margin-left: 10px;
+  color: var(--light);
 }
 </style>

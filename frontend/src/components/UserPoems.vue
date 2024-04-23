@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div class="background-image"></div>
+    <div class="overlay"></div>
+
     <button @click="logout" class="grey-btn">Logout</button>
     <a @click="goToUpdateDetails" class="update-details-btn"> Your account </a>
     <button class="inspiration-btn" @click="redirectToInspiration">
@@ -7,8 +10,10 @@
     </button>
 
     <h2>Your Poems</h2>
-    <SortByDate @sort-poems="sortPoems" />
-    <Search @search="searchPoems" />
+    <div class="sort-and-search">
+      <SortByDate @sort-poems="sortPoems" />
+      <Search @search="searchPoems" />
+    </div>
 
     <div @click="toggleNewPoemForm" class="add-poem-toggle">Add New Poem</div>
     <hr />
@@ -364,5 +369,38 @@ export default {
 
 .inspiration-btn:hover {
   transform: translateY(-5px);
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.SortByDate,
+.NewPoemForm,
+.Search,
+.ShareButton {
+  position: relative;
+  z-index: 2;
+}
+
+.add-poem-toggle {
+  position: relative;
+  z-index: 2;
+}
+
+h2 {
+  color: var(--light);
+  padding: 1em;
+}
+
+.sort-and-search {
+  display: flex;
+  align-items: center;
+}
+
+.sort-and-search > * {
+  margin-right: 20px;
 }
 </style>

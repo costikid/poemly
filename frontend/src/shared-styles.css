@@ -46,12 +46,17 @@ select {
 }
 
 
-.container {
-  margin-left: 20px;
-}
+
 
 .poem-container {
   margin-bottom: 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  max-width: 50%;
+  padding: 0.5em;
+  margin-left: 10px;
+  color: var(--light);
 }
 
 
@@ -69,11 +74,69 @@ a {
 }
 
 a:hover {
-  color: rgb(43, 43, 43);
+  color: rgb(170, 170, 170);
   cursor: var(--link-cursor);
 }
 
 .error-message {
   color: var(--warning);
   margin-top: 5px;
+}
+
+
+
+.auth-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  text-align: center;
+  max-width: 100%;
+}
+
+.auth-form {
+  text-align: left;
+}
+
+.glass-effect {
+  backdrop-filter: blur(5px);
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("@/assets/homepage-illustration.png");
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--overlay-background);
+  pointer-events: none;
+  z-index: -1;
+
+}
+
+.update-details-btn,
+.add-poem-toggle{
+  color: var(--light);
+  padding: 1em;
+
+}
+
+p,h1,h2,h3{
+  color: var(--light);
 }
