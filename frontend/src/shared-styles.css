@@ -140,3 +140,8 @@ a:hover {
 p,h1,h2,h3{
   color: var(--light);
 }
+
+.form-link {
+  text-decoration: underline;
+  color: var(--light);
+}

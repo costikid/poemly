@@ -25,6 +25,10 @@
         <button type="submit" class="filled-violet-btn">Register</button>
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </form>
+      <p>
+        Have an account?<br />
+        <router-link to="/login" class="form-link">Log in</router-link>
+      </p>
     </div>
   </div>
 </template>
@@ -63,9 +67,11 @@ export default {
           Cookies.set("token", token);
           console.log("Registration successful");
           router.push({ name: "Login" });
+        } else if (response.status === 409) {
+          errorMessage.value = "User already exists. Please login instead.";
         } else {
-          const errorMessage = await response.json();
-          errorMessage.value = errorMessage.message;
+          const errorMessageResponse = await response.json();
+          errorMessage.value = errorMessageResponse.message;
         }
       } catch (error) {
         console.error("Error registering user:", error.message);
@@ -112,10 +118,9 @@ button {
 
 h2 {
   margin-bottom: 20px;
-  color: white;
 }
 
 .error-message {
-  color: red;
+  color: var(--warning);
 }
 </style>

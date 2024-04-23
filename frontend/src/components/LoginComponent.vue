@@ -5,6 +5,8 @@
     <div class="auth-container glass-effect">
       <h1>Login</h1>
       <form @submit.prevent="login" class="auth-form">
+        <label for="email" required autocomplete="username">Email</label>
+
         <input
           type="email"
           v-model="email"
@@ -12,6 +14,8 @@
           required
           pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
         />
+        <label for="password" autocomplete="current-password">Password</label>
+
         <input
           type="password"
           v-model="password"
@@ -21,6 +25,10 @@
         <button type="submit" class="filled-violet-btn">Login</button>
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </form>
+      <p>
+        Don't have an account?<br />
+        <router-link to="/register" class="form-link">Sign up</router-link>
+      </p>
     </div>
   </div>
 </template>
