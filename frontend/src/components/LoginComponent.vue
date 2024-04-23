@@ -5,18 +5,20 @@
     <div class="auth-container glass-effect">
       <h1>Login</h1>
       <form @submit.prevent="login" class="auth-form">
-        <label for="email" required autocomplete="username">Email</label>
+        <label for="email">Email</label>
 
         <input
+          autocomplete="username"
           type="email"
           v-model="email"
           placeholder="Email"
           required
           pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
         />
-        <label for="password" autocomplete="current-password">Password</label>
+        <label for="password">Password</label>
 
         <input
+          autocomplete="current-password"
           type="password"
           v-model="password"
           placeholder="Password"

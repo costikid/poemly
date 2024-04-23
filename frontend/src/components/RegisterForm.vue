@@ -7,6 +7,7 @@
       <form @submit.prevent="registerUser" class="auth-form">
         <label for="email">Email:</label>
         <input
+          autocomplete="email"
           type="email"
           v-model="email"
           placeholder="Email"
@@ -14,8 +15,9 @@
           pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
         />
 
-        <label for="password">Password:</label>
+        <label for="password">Password</label>
         <input
+          autocomplete="new-password"
           type="password"
           id="password"
           v-model="password"

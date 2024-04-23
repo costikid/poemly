@@ -7,7 +7,13 @@
 
     <form @submit.prevent="updateEmail">
       <label for="newEmail">New Email:</label>
-      <input type="email" id="newEmail" v-model="newEmail" required />
+      <input
+        type="email"
+        id="newEmail"
+        v-model="newEmail"
+        required
+        autocomplete="email"
+      />
       <button type="submit">Update Email</button>
       <p v-if="emailUpdated" class="success-message">
         Email updated successfully!
@@ -20,7 +26,13 @@
       <label for="oldPassword">Old Password:</label>
       <input type="password" id="oldPassword" v-model="oldPassword" required />
       <label for="newPassword">New Password:</label>
-      <input type="password" id="newPassword" v-model="newPassword" required />
+      <input
+        autocomplete="new-password"
+        type="password"
+        id="newPassword"
+        v-model="newPassword"
+        required
+      />
       <button type="submit">Change Password</button>
       <p v-if="passwordChanged" class="success-message">
         Password changed successfully!

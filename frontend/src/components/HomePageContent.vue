@@ -1,9 +1,7 @@
 <template>
   <div class="container">
     <div class="background-image"></div>
-    <!-- Background Image -->
     <div class="overlay"></div>
-    <!-- Overlay -->
     <div class="content">
       <h1>Welcome to Poemly</h1>
       <h2>Where simplicity reigns</h2>
