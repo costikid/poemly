@@ -24,7 +24,7 @@
           placeholder="Enter your password"
           required
         />
-        <button type="submit" class="filled-violet-btn">Register</button>
+        <button type="submit" class="filled-orange-btn">Register</button>
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </form>
       <p>
@@ -124,5 +124,9 @@ h2 {
 
 .error-message {
   color: var(--warning);
+}
+
+label {
+  color: var(--light);
 }
 </style>

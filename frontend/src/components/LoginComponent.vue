@@ -115,4 +115,8 @@ h1 {
 .error-message {
   color: var(--warning);
 }
+
+label {
+  color: var(--light);
+}
 </style>

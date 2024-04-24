@@ -68,4 +68,8 @@ export default {
 .content-textarea {
   height: 300px;
 }
+
+label {
+  color: var(--light);
+}
 </style>

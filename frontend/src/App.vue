@@ -10,6 +10,4 @@ export default {
 };
 </script>
 
-<style>
-/* Your CSS styles here */
-</style>
+<style></style>

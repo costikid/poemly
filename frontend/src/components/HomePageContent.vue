@@ -6,8 +6,8 @@
       <h1>Welcome to Poemly</h1>
       <h2>Where simplicity reigns</h2>
       <p>
-        Focus solely on crafting, editing, and deleting your poems, notes, and
-        thoughts, free from distractions.
+        Focus solely on crafting your poems, notes, and thoughts, free from
+        distractions.
       </p>
       <div class="buttons">
         <button @click="redirectToLogin" class="filled-violet-btn">

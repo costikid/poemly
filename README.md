@@ -1,6 +1,6 @@
 # Express.js Backend with User Authentication and Poem Management API
 
-Use the branch called "final"
+Things to note: Use the branch called "final". The auth is implemented using a token generated in the backend, which is then transformed into a cookie in the backend to retrieve it.
 
 - BACKEND
 
@@ -118,7 +118,7 @@ Remember to include the bearer token
 
 ### Get poems by user ID
 
-- **Endpoint**: `GET  http:localhost:3000/poems/user/:userId`
+- **Endpoint**: `GET  http:localhost:3000/poems/user/userId`
 
 You will find the user ID in the mongo db database. Also, I implemented a functionality whereby users can view only their own poems. Not other people's.
 Remember to include the bearer token
@@ -126,6 +126,12 @@ Remember to include the bearer token
 ### Get the poem's written date
 
 **Endpoint**: `GET http:localhost:3000/api/poems/poemid/writtenDate`
+
+Remember the bearer token
+
+### Get a poem by its ID
+
+- **Endpoint**: `GET http:localhost:3000/poems/poemid`
 
 Remember the bearer token
 
