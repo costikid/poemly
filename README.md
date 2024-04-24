@@ -67,7 +67,7 @@ Things to note: Use the branch called "final". The auth is implemented using a t
 
 ```
 
-6. Set up MongoDB following [these instructions](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/). I also recommend to donwload [MongDbcompass](https://www.mongodb.com/products/tools/compass).
+6. Set up MongoDB following [these instructions](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/). I also recommend to download [MongoDbcompass](https://www.mongodb.com/products/tools/compass).
 
 ## API Endpoints
 
