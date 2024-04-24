@@ -9,7 +9,7 @@ Things to note: Use the branch called "final". The auth is implemented using a t
 3. Users can only view their own poems. Not the ones by other people.
 4. Guide on how to test this using the thunderbolt vs code extension. Always remember the bearer token or your API calls won't work!
 5. CRUD backend API to change a user's password, delete the user or change their email
-6. Connection to mongodb using mongoose to store users emails and passwords, poems titles and content
+6. Connection to mongodb using mongoose to store users emails and passwords, poems titles, content and written date.
 7. Dummy SMTP server to send the user a welcome email (using Mailslurp and Nodemailer). Note that it's not included in the backend code. You can read below if you wish to implement this feature.
 8. Check the end of the readme file for links to the tech stack used
 
@@ -27,8 +27,9 @@ Things to note: Use the branch called "final". The auth is implemented using a t
 
 1. Clone the repository.
 2. Install dependencies using `npm install`in the root folder
-3. `nodemon index.js` to start the server. Your backend will run on `http://localhost:3000/`
-4. Go to the frontend folder (cd frontend). Run `npm install`. Then type `npm run serve` to start the Vue JS app which will run on `http://localhost:8081/`
+3. Create a .env file in the root folder and insert `JWT_SECRET=yewfwefwef` . Remember to include the .env in gitignore so you don't commit it with the changes.
+4. `nodemon index.js` to start the server. Your backend will run on `http://localhost:3000/`
+5. Go to the frontend folder (cd frontend). Run `npm install`. Then type `npm run serve` to start the Vue JS app which will run on `http://localhost:8081/` . Both servers need to be running at the same time for the app to work (have one terminal window with localhost:3000 and another one with localhost:8081).
 
 - Requires dependencies (backend)
 
@@ -66,7 +67,7 @@ Things to note: Use the branch called "final". The auth is implemented using a t
 
 ```
 
-5. Set up MongoDB following [these instructions](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/). I also recommend to donwload [MongDbcompass](https://www.mongodb.com/products/tools/compass).
+6. Set up MongoDB following [these instructions](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/). I also recommend to donwload [MongDbcompass](https://www.mongodb.com/products/tools/compass).
 
 ## API Endpoints
 
@@ -96,7 +97,7 @@ Remember the password needs to be at least 6 characters long, contain a number a
 }
 ```
 
-As a response, you will get a token. Remember to include this bearer token to make other requests
+As a response, you will get a token. Remember to include this bearer token to make other requests.
 
 ### Post a poem
 
@@ -231,3 +232,10 @@ Configure nodemailer for email functionality and Mailslurp's SMTP server for tes
 7. [Pinia](https://pinia.vuejs.org/)
 8. [VueCompositionAPI](https://vuejs.org/api/composition-api-setup.html)
 9. [Quotable API](https://github.com/lukePeavey/quotable)
+
+## To do
+
+1. Cookies in the express backend too instead of the token (I am only transforming the token into cookies in the frontend for now)
+2. Password strength meter instead of enforcing password complexity. Will use [vue-password-strength-meter](https://www.npmjs.com/package/vue-password-strength-meter)
+3. Deploy to [railway](https://railway.app)
+4. SEO and accessibility like image alt-text
