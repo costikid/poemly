@@ -7,7 +7,7 @@ Things to note: Use the branch called "final". The auth is implemented using a t
 1. User auth with JWT
 2. CRUD backend API to create, edit and delete poems
 3. Users can only view their own poems. Not the ones by other people.
-4. Guide on how to test this using the thunderbolt vs code extension. Always remember the bearer token or your API calls won't work!
+4. Guide on how to test this using the thunderclient vs code extension. Always remember the bearer token or your API calls won't work!
 5. CRUD backend API to change a user's password, delete the user or change their email
 6. Connection to mongodb using mongoose to store users emails and passwords, poems titles, content and written date.
 7. Dummy SMTP server to send the user a welcome email (using Mailslurp and Nodemailer). Note that it's not included in the backend code. You can read below if you wish to implement this feature.
