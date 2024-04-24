@@ -1,6 +1,6 @@
 # Express.js Backend with User Authentication and Poem Management API
 
-Things to note: Use the branch called "final". The auth is implemented using a token generated in the backend, which is then transformed into a cookie in the backend to retrieve it.
+Things to note: Use the branch called "final". The auth is implemented using a token generated in the backend, which is then transformed into a cookie in the frontend to retrieve it. This app is not ready for real life deployment, as some security best practices still need to be implemented.
 
 - BACKEND
 
