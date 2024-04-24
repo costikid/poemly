@@ -1,4 +1,4 @@
-# Express.js Backend with User Authentication and Poem Management API
+# Express.js Backend with User Authentication and Poem Management API + VueJs frontend
 
 Things to note: Use the branch called "final". The auth is implemented using a token generated in the backend, which is then transformed into a cookie in the frontend to retrieve it. This app is not ready for real life deployment, as some security best practices still need to be implemented. The files apiConfig.js and authConfig.js in the frontend folder are not being used. I need to leave them there for future reference...
 
