@@ -1,6 +1,6 @@
 # Express.js Backend with User Authentication and Poem Management API
 
-Things to note: Use the branch called "final". The auth is implemented using a token generated in the backend, which is then transformed into a cookie in the frontend to retrieve it. This app is not ready for real life deployment, as some security best practices still need to be implemented.
+Things to note: Use the branch called "final". The auth is implemented using a token generated in the backend, which is then transformed into a cookie in the frontend to retrieve it. This app is not ready for real life deployment, as some security best practices still need to be implemented. The files apiConfig.js and authConfig.js in the frontend folder are not being used. I need to leave them there for future reference...
 
 - BACKEND
 
@@ -20,15 +20,15 @@ Things to note: Use the branch called "final". The auth is implemented using a t
 3. Users can ORDER poems by written date or SEARCH them
 4. Users can share poems via email or social media
 5. Pinia for state management
-6. Composition API
+6. VueJs Composition API (different from the Options API)
 7. Check the end of the readme file for links to the tech stack used
 
 ## Setup
 
 1. Clone the repository.
 2. Install dependencies using `npm install`in the root folder
-3. `nodemon index.js` to start the server
-4. Go to frontend folder. Run `npm install`. `npm run serve` to start the Vue JS app
+3. `nodemon index.js` to start the server. Your backend will run on `http://localhost:3000/`
+4. Go to the frontend folder (cd frontend). Run `npm install`. Then type `npm run serve` to start the Vue JS app which will run on `http://localhost:8081/`
 
 - Requires dependencies (backend)
 
@@ -48,7 +48,25 @@ Things to note: Use the branch called "final". The auth is implemented using a t
 
 ```
 
-3. Set up MongoDB following [these instructions](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/). I also recommend donwload [MongDbcompass](https://www.mongodb.com/products/tools/compass).
+- Requires dependencies (frontend)
+
+```json
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.2",
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "bootstrap-vue": "^2.23.1",
+    "core-js": "^3.8.3",
+    "file-saver": "^2.0.5",
+    "pinia": "^2.1.7",
+    "vue": "^3.4.23",
+    "vue-router": "^4.3.0",
+    "vuex": "^4.0.2"
+  },
+
+```
+
+5. Set up MongoDB following [these instructions](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/). I also recommend to donwload [MongDbcompass](https://www.mongodb.com/products/tools/compass).
 
 ## API Endpoints
 
