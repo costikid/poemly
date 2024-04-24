@@ -1,5 +1,7 @@
 # Express.js Backend with User Authentication and Poem Management API
 
+Use the branch called "final"
+
 - BACKEND
 
 1. User auth with JWT
@@ -8,7 +10,7 @@
 4. Guide on how to test this using the thunderbolt vs code extension. Always remember the bearer token or your API calls won't work!
 5. CRUD backend API to change a user's password, delete the user or change their email
 6. Connection to mongodb using mongoose to store users emails and passwords, poems titles and content
-7. Dummy SMTP server to send the user a welcome email (using Mailslurp and Nodemailer)
+7. Dummy SMTP server to send the user a welcome email (using Mailslurp and Nodemailer). Note that it's not included in the backend code. You can read below if you wish to implement this feature.
 8. Check the end of the readme file for links to the tech stack used
 
 - FRONTEND
@@ -24,8 +26,8 @@
 ## Setup
 
 1. Clone the repository.
-2. Install dependencies using `npm install`.
-3. `node index.js` to start the server
+2. Install dependencies using `npm install`in the root folder
+3. `nodemon index.js` to start the server
 4. Go to frontend folder. Run `npm install`. `npm run serve` to start the Vue JS app
 
 - Requires dependencies (backend)
@@ -36,20 +38,25 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "isomorphic-fetch": "^3.0.0",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
+    "mailslurp-client": "^15.20.0",
     "mongoose": "^8.2.4",
-     "nodemailer": "^6.9.13"
+    "nodemailer": "^6.9.13"
   }
 
 ```
 
-3. Set up MongoDB following [these instructions](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/)
+3. Set up MongoDB following [these instructions](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/). I also recommend donwload [MongDbcompass](https://www.mongodb.com/products/tools/compass).
 
 ## API Endpoints
 
 ### Register a User
 
-- **Endpoint**: `POST /auth/register`
+Remember the password needs to be at least 6 characters long, contain a number and a special character.
+
+- **Endpoint**: `POST http:localhost:3000/auth/register`
 - **Sample Request Body**:
 
 ```json
@@ -61,7 +68,7 @@
 
 ### Login a User
 
-- **Endpoint**: `POST /auth/login`
+- **Endpoint**: `POST http:localhost:3000/auth/login`
 - **Sample Request Body (use same details you used to register)**:
 
 ```json
@@ -75,7 +82,7 @@ As a response, you will get a token. Remember to include this bearer token to ma
 
 ### Post a poem
 
-- **Endpoint**: `POST /api/poems`
+- **Endpoint**: `POST http:localhost:3000/api/poems`
 - **Sample Request Body**:
 
 ```json
@@ -89,7 +96,7 @@ Remember to include the bearer token
 
 ### Edit a poem
 
-- **Endpoint**: `PUT /api/poems/poemid`
+- **Endpoint**: `PUT http:localhost:3000/api/poems/poemid`
 - **Sample Request Body**:
 
 ```json
@@ -104,27 +111,27 @@ Remember to include the bearer token
 
 ### Delete a poem
 
-- **Endpoint**: `DELETE  /api/poems/poemid`
+- **Endpoint**: `DELETE  http:localhost:3000/api/poems/poemid`
 
 You will find the poem ID in your mongo db
 Remember to include the bearer token
 
 ### Get poems by user ID
 
-- **Endpoint**: `GET  /poems/user/:userId`
+- **Endpoint**: `GET  http:localhost:3000/poems/user/:userId`
 
 You will find the user ID in the mongo db database. Also, I implemented a functionality whereby users can view only their own poems. Not other people's.
 Remember to include the bearer token
 
 ### Get the poem's written date
 
-**Endpoint**: `GET /api/poems/poemid/writtenDate`
+**Endpoint**: `GET http:localhost:3000/api/poems/poemid/writtenDate`
 
 Remember the bearer token
 
 ### Change user email
 
-- **Endpoint**: `PUT /api/update-details`
+- **Endpoint**: `PUT http:localhost:3000/api/update-details`
 - **Sample Request Body**:
 
 ```json
@@ -137,7 +144,7 @@ Remember the bearer token
 
 ### Change user password
 
-- **Endpoint**: `PUT /api/change-password`
+- **Endpoint**: `PUT http:localhost:3000/api/change-password`
 
 - **Sample Request Body**:
 
@@ -152,7 +159,7 @@ Remember the bearer token
 
 ### Delete a user
 
-**Endpoint**: `DELETE /api/delete`
+**Endpoint**: `DELETE http:localhost:3000/api/delete`
 
 Remember the bearer token
 
