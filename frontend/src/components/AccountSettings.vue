@@ -37,6 +37,9 @@
       <p v-if="passwordChanged" class="success-message">
         Password changed successfully!
       </p>
+      <p v-if="passwordChangeError" class="error-message">
+        {{ passwordChangeError }}
+      </p>
     </form>
     <hr />
 
@@ -68,6 +71,7 @@ export default {
     const emailUpdated = ref(false);
     const passwordChanged = ref(false);
     const showDeleteConfirmationModal = ref(false);
+    const passwordChangeError = ref("");
 
     const apiUrlsStore = useApiUrlsStore();
     const router = useRouter();
@@ -120,10 +124,11 @@ export default {
         oldPassword.value = "";
         newPassword.value = "";
       } catch (error) {
-        console.error(error);
+        console.error("Error changing password:", error);
+        passwordChangeError.value =
+          "Error changing password. Please try again.";
       }
     };
-
     const deleteAccount = async () => {
       try {
         const token = Cookies.get("token"); // Retrieve token from cookies

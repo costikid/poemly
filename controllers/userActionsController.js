@@ -29,6 +29,16 @@ exports.changePassword = async (req, res) => {
       return res.status(401).json({ message: 'Invalid old password' });
     }
 
+    // Check if new password is the same as the old one
+    if (oldPassword === newPassword) {
+      return res.status(400).json({ message: 'New password must be different from the old password' });
+    }
+
+    // Check if new password meets complexity requirements
+    if (!/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{6,}$/.test(newPassword)) {
+      return res.status(400).json({ message: 'New password must be at least 6 characters long and contain at least one number and one special character' });
+    }
+
     // Hash the new password
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(newPassword, salt);
