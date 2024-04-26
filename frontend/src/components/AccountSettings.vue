@@ -100,7 +100,6 @@ export default {
         console.error(error);
       }
     };
-
     const changePassword = async () => {
       try {
         const token = Cookies.get("token"); // Retrieve token from cookies
@@ -123,12 +122,16 @@ export default {
         passwordChanged.value = true;
         oldPassword.value = "";
         newPassword.value = "";
+
+        // Reset passwordChangeError if the password change is successful
+        passwordChangeError.value = "";
       } catch (error) {
         console.error("Error changing password:", error);
         passwordChangeError.value =
           "Error changing password. Please try again.";
       }
     };
+
     const deleteAccount = async () => {
       try {
         const token = Cookies.get("token"); // Retrieve token from cookies
@@ -173,6 +176,7 @@ export default {
       openDeleteConfirmationModal,
       closeDeleteConfirmationModal,
       redirectToUserPoemsPage,
+      passwordChangeError,
     };
   },
 };
