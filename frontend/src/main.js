@@ -1,12 +1,16 @@
 import { createApp } from 'vue';
-import { createPinia } from 'pinia'; // Import Pinia
+import { createPinia } from 'pinia'; 
 import App from './App.vue';
 import router from './router';
 import './global.css';
+import Cookies from 'js-cookie'; 
 
-const pinia = createPinia(); // Create a Pinia instance
 
-// Create the app, use the router, use Pinia, and mount it to the DOM
+const pinia = createPinia(); 
+Cookies.defaults = {
+  sameSite: 'Strict', 
+};
+
 createApp(App)
   .use(router)
   .use(pinia)
