@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div class="main-auth-container">
     <div class="background-image"></div>
     <div class="overlay"></div>
     <div class="auth-container glass-effect">
-      <h2>Register</h2>
+      <h1>Register</h1>
       <form @submit.prevent="registerUser" class="auth-form">
         <label for="email">Email:</label>
         <input
@@ -23,7 +23,24 @@
           v-model="password"
           placeholder="Enter your password"
           required
+          @input="isTypingPassword = true"
         />
+
+        <div class="password-strength-meter" v-if="isTypingPassword">
+          <span v-if="passwordStrength === 0" class="strength-label"
+            >Very Weak</span
+          >
+          <span v-else-if="passwordStrength === 1" class="strength-label"
+            >Weak</span
+          >
+          <span v-else-if="passwordStrength === 2" class="strength-label"
+            >Fair</span
+          >
+          <span v-else-if="passwordStrength === 3" class="strength-label"
+            >Strong</span
+          >
+        </div>
+
         <button type="submit" class="filled-orange-btn">Register</button>
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </form>
@@ -36,10 +53,11 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useApiUrlsStore } from "@/stores/apiUrls";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
+import zxcvbn from "zxcvbn";
 
 export default {
   name: "RegisterForm",
@@ -49,6 +67,19 @@ export default {
     const email = ref("");
     const password = ref("");
     const errorMessage = ref("");
+    const isTypingPassword = ref(false); // New boolean flag
+
+    const passwordStrength = computed(() => {
+      return zxcvbn(password.value).score;
+    });
+
+    const passwordStrengthText = computed(() => {
+      if (passwordStrength.value === 0) return "Very Weak";
+      if (passwordStrength.value === 1) return "Weak";
+      if (passwordStrength.value === 2) return "Fair";
+      if (passwordStrength.value === 3) return "Strong";
+      return "";
+    });
 
     const registerUser = async () => {
       try {
@@ -85,19 +116,15 @@ export default {
       password,
       errorMessage,
       registerUser,
+      passwordStrength,
+      passwordStrengthText,
+      isTypingPassword,
     };
   },
 };
 </script>
 
 <style scoped>
-.container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
 label {
   display: block;
   margin-bottom: 5px;
@@ -122,11 +149,20 @@ h2 {
   margin-bottom: 20px;
 }
 
-.error-message {
-  color: var(--warning);
-}
-
 label {
   color: var(--light);
+}
+
+.password-strength-meter {
+  height: 2em;
+  margin-bottom: 10px;
+}
+
+.password-strength-meter span {
+  color: var(--light);
+}
+
+form {
+  width: 15em;
 }
 </style>

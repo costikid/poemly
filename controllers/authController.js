@@ -39,7 +39,7 @@ exports.register = async (req, res) => {
 
     // Check if password meets complexity requirements
     if (!/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{6,}$/.test(password)) {
-      return res.status(400).json({ message: 'Password must be at least 6 characters long and contain at least one number and one special character' });
+      return res.status(400).json({ message: 'Choose a stronger password' });
     }
 
     const hash = await bcrypt.hash(password, 10);

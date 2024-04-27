@@ -233,6 +233,12 @@ Configure nodemailer for email functionality and Mailslurp's SMTP server for tes
 8. [VueCompositionAPI](https://vuejs.org/api/composition-api-setup.html)
 9. [Quotable API](https://github.com/lukePeavey/quotable)
 
+# Security best practices implemented
+
+1. Password hashing
+2. Strict mode for SameSite cookies
+3. Password strength meter with [zxcvbn](https://github.com/dropbox/zxcvbn)
+
 ## To do (general)
 
 1. Deploy to [railway](https://railway.app)
@@ -241,7 +247,4 @@ Configure nodemailer for email functionality and Mailslurp's SMTP server for tes
 ## To do (security specific)
 
 1. Validation: express-validator to validate incoming request parameters, query strings, and request bodies.
-2. Sanitization: sanitize input data to remove or escape potentially dangerous characters. This can help prevent injection attacks, XSS attacks, and other security vulnerabilities.
-3. Cookies in the express backend too instead of the token (I am only transforming the token into cookies in the frontend for now)
-4. Password strength meter instead of enforcing password complexity. Will use [vue-password-strength-meter](https://www.npmjs.com/package/vue-password-strength-meter)
-5. Logout actions: revoke the JWT token associated with the user. This can be done by maintaining a blacklist of revoked tokens on the server side. When a user logs out, add the JWT token to the blacklist or mark it as invalid. When validating JWT tokens in the verifyToken middleware, check if the token exists in the blacklist before allowing access to protected routes. If the token is found in the blacklist, deny access and treat it as expired or invalid.
+2. Logout actions: revoke the JWT token associated with the user. This can be done by maintaining a blacklist of revoked tokens on the server side. When a user logs out, add the JWT token to the blacklist or mark it as invalid. When validating JWT tokens in the verifyToken middleware, check if the token exists in the blacklist before allowing access to protected routes. If the token is found in the blacklist, deny access and treat it as expired or invalid.

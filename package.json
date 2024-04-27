@@ -21,7 +21,8 @@
     "mailslurp-client": "^15.20.0",
     "mongoose": "^8.2.4",
     "nodemailer": "^6.9.13",
-    "vue-password-strength-meter": "^1.7.2"
+    "vue-password-strength-meter": "^1.7.2",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

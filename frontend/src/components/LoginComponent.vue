@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="main-auth-container">
     <div class="background-image"></div>
     <div class="overlay"></div>
     <div class="auth-container glass-effect">
@@ -85,13 +85,6 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
 input {
   width: 100%;
   padding: 10px;
@@ -110,10 +103,6 @@ button {
 h1 {
   margin-bottom: 20px;
   color: var(--light);
-}
-
-.error-message {
-  color: var(--warning);
 }
 
 label {
